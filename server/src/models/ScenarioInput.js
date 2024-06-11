@@ -2,12 +2,12 @@ const Model = require("./Model.js")
 
 class ScenarioInput extends Model {
   static get tableName() {
-    return 'scenario-inputs';
+    return "scenario-inputs"
   }
 
   static get jsonSchema() {
     return {
-      type: "object"
+      type: "object",
     }
   }
 
@@ -19,27 +19,27 @@ class ScenarioInput extends Model {
         modelClass: Portfolio,
         join: {
           from: "scenario-inputs.portfolioId",
-          to: "portfolios.id"
-        }
+          to: "portfolios.id",
+        },
       },
       projectionYears: {
         relation: Model.HasManyRelation,
         modelClass: ProjectionYear,
         join: {
           from: "scenario-inputs.id",
-          to: "projection-years.scenario-inputsId"
-        }
+          to: "projection-years.scenario-inputsId",
+        },
       },
       scenarioOutput: {
         relation: Model.HasOneRelation,
         modelClass: ScenarioOutput,
         join: {
           from: "scenario-inputs.id",
-          to: "scenario-outputs.scenario-inputsId"
-        }
-      }
+          to: "scenario-outputs.scenario-inputsId",
+        },
+      },
     }
   }
 }
 
-module.exports = ScenarioInput;
+module.exports = ScenarioInput

@@ -2,16 +2,16 @@ const Model = require("./Model.js")
 
 class Portfolio extends Model {
   static get tableName() {
-    return 'portfolios';
+    return "portfolios"
   }
 
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["name", "expenses"]
+      required: ["name", "expenses"],
     }
   }
-  
+
   static relationMappings() {
     const { ScenarioInput } = require("./index.js")
     return {
@@ -20,11 +20,11 @@ class Portfolio extends Model {
         modelClass: ScenarioInput,
         join: {
           from: "portfolios.id",
-          to: "scenario-inputs.portfolioId"
-        }
-      }
+          to: "scenario-inputs.portfolioId",
+        },
+      },
     }
   }
 }
 
-module.exports = Portfolio;
+module.exports = Portfolio

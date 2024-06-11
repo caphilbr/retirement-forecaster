@@ -3,7 +3,7 @@ const takeWithdrawal = (
   initBalRoth,
   initBalBank,
   initBalHomeEq,
-  withdrawals
+  withdrawals,
 ) => {
   let newRegBal = initBalReg
   let newRothBal = initBalRoth

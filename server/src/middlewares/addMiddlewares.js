@@ -1,9 +1,9 @@
-import addEnvironmentMiddlewares from "./addEnvironmentMiddlewares.js";
-import addClientMiddlewares from "./addClientMiddlewares.js";
+import addEnvironmentMiddlewares from "./addEnvironmentMiddlewares.js"
+import addClientMiddlewares from "./addClientMiddlewares.js"
 
 const addMiddlewares = async (app) => {
-  await addClientMiddlewares(app);
-  await addEnvironmentMiddlewares(app);
-};
+  await addClientMiddlewares(app)
+  await addEnvironmentMiddlewares(app)
+}
 
-export default addMiddlewares;
+export default addMiddlewares

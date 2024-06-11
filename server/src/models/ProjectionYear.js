@@ -2,12 +2,12 @@ const Model = require("./Model.js")
 
 class ProjectionYear extends Model {
   static get tableName() {
-    return 'projection-years';
+    return "projection-years"
   }
 
   static get jsonSchema() {
     return {
-      type: "object"
+      type: "object",
     }
   }
 
@@ -19,11 +19,11 @@ class ProjectionYear extends Model {
         modelClass: ScenarioInput,
         join: {
           from: "projection-years.scenario-inputsId",
-          to: "scenario-inputs.id"
-        }
-      }
+          to: "scenario-inputs.id",
+        },
+      },
     }
   }
 }
 
-module.exports = ProjectionYear;
+module.exports = ProjectionYear
