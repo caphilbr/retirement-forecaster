@@ -1,8 +1,12 @@
 /* eslint-disable no-console */
 import { connection } from "../boot.js"
 import seederTakeWithdrawal from "./../services/seederTakeWithdrawal.js"
-
-
+import {
+  Portfolio,
+  ScenarioInput,
+  ScenarioOutput,
+  ProjectionYear,
+} from "./../models/index.js"
 
 class Seeder {
   static async seed() {
@@ -61,12 +65,12 @@ class Seeder {
     console.log("Looping thru scenario #1 projection years...")
     do {
       loopCounter++
-      const begYrBalances = takeWithdrawal(
+      const begYrBalances = seederTakeWithdrawal(
         initBalReg,
         initBalRoth,
         initBalBank,
         initBalHomeEq,
-        withdrawals - savings
+        withdrawals - savings,
       )
       let begYrBalReg = begYrBalances.newRegBal
       let begYrBalRoth = begYrBalances.newRothBal
@@ -194,12 +198,12 @@ class Seeder {
     console.log("Looping thru scenario #2 projection years...")
     do {
       loopCounter++
-      const begYrBalances = takeWithdrawal(
+      const begYrBalances = seederTakeWithdrawal(
         initBalReg,
         initBalRoth,
         initBalBank,
         initBalHomeEq,
-        withdrawals - savings
+        withdrawals - savings,
       )
       let begYrBalReg = begYrBalances.newRegBal
       let begYrBalRoth = begYrBalances.newRothBal
@@ -287,9 +291,9 @@ class Seeder {
       }
     } while (age < 92)
 
-    console.log("Done!");
-    await connection.destroy();
+    console.log("Done!")
+    await connection.destroy()
   }
 }
 
-export default Seeder;
+export default Seeder
