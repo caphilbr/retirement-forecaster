@@ -8,7 +8,134 @@
   box-sizing: border-box;
 }
 
+
 :root {
   -moz-tab-size: 4;
   tab-size: 4;
+  --light-green: rgb(224, 251, 224);
+  --dark-green: rgb(0, 126, 0);
+  --semi-gray: rgb(192, 192, 192, 0.2);
+}
+
+body {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.background-color {
+  background-color: var(--light-green);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -2;
+}
+
+.dashboard-title {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+  color: white;
+  background-color: var(--dark-green);
+}
+
+.horiz-overflow-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.portfolio-tile {
+  display: inline-block;
+  border-radius: 0.25rem;
+  width: 500px;
+  margin: 5px 5px 0px 0px;
+  padding: 3px;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-tile table {
+  margin: 0;
+}
+
+.portfolio-tile tbody {
+  border: none;
+}
+
+.portfolio-tile tr:nth-child(even) {
+  background-color: transparent;
+}
+
+.portfolio-tile td {
+  padding: 0;  
+}
+
+.portfolio-tile p,
+.portfolio-tile span {
+    margin: 0;
+}
+
+.portfolio-name {
+  font-size: 110%;
+  font-weight: bold;
+}
+
+.hover-button {
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+.hover-button:hover {
+  background-color: var(--light-green)
+}
+
+.scenario-summary-tile {
+  margin: 10px 5px 20px 5px;
+  border-radius: 0.25rem;
+  font-size: 90%;
+  padding: 3px;
+  background-color: var(--semi-gray);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.scenario-summary-tile table {
+  width: 100%;
+  table-layout: fixed;
+  white-space: normal;
+}
+
+.scenario-summary-tile tbody {
+  background-color: transparent;
+}
+
+.wide {
+  width: 75%;
+}
+
+.narrow {
+  width: 25%;
+}
+
+.inputs-summary {
+  background-color: var(--semi-gray);
+}
+
+.scenario-header {
+  text-decoration: underline;
+  
+}
+
+.success {
+  font-weight: bold;
+  color: darkgreen; 
+}
+
+.fail {
+  font-weight: bold;
+  color: darkred; 
 }

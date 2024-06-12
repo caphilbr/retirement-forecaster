@@ -18,7 +18,7 @@ class ScenarioOutput extends Model {
         relation: Model.HasOneRelation,
         modelClass: ScenarioInput,
         join: {
-          from: "scenario-outputs.scenario-inputsId",
+          from: "scenario-outputs.scenarioInputsId",
           to: "scenario-inputs.id",
         },
       },

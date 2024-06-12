@@ -27,7 +27,7 @@ class ScenarioInput extends Model {
         modelClass: ProjectionYear,
         join: {
           from: "scenario-inputs.id",
-          to: "projection-years.scenario-inputsId",
+          to: "projection-years.scenarioInputsId",
         },
       },
       scenarioOutput: {
@@ -35,7 +35,7 @@ class ScenarioInput extends Model {
         modelClass: ScenarioOutput,
         join: {
           from: "scenario-inputs.id",
-          to: "scenario-outputs.scenario-inputsId",
+          to: "scenario-outputs.scenarioInputsId",
         },
       },
     }

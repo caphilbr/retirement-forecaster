@@ -21,7 +21,7 @@ class Seeder {
 
     console.log("Seeding a portfolio...")
     await Portfolio.query().insert({
-      name: "testPortfolio1",
+      name: "Test Portfolio 1",
       salary: salary,
       expenses: expenses,
       annualSavings: savings,
