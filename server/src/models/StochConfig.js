@@ -36,7 +36,6 @@ class StochConfig extends Model {
 
   async getStochResults() {
     const { Scenario } = require("./index.js")
-
     const scenarios = await Scenario.query().where({ stochConfigsId: this.id })
     const {
       avgRetAge,
@@ -46,22 +45,12 @@ class StochConfig extends Model {
       percExhaust,
       percFrugal,
     } = stochResults(scenarios, this.targetRetAge)
-    console.log('the instance we are in ->', this)
-    console.log('returned from service function ->', {
-      avgRetAge,
-      avgBalAtDeath,
-      avgFrugalYrs,
-      percRetAtTgt,
-      percExhaust,
-      percFrugal,
-    })
     this.avgRetAge = avgRetAge
     this.avgBalAtDeath = avgBalAtDeath
     this.avgFrugalYrs = avgFrugalYrs
     this.percRetAtTgt = percRetAtTgt
     this.percExhaust = percExhaust
     this.percFrugal = percFrugal
-    console.log('the instance we are in after setting the values->', this)
   }
 }
 
