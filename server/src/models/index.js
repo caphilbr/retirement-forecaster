@@ -1,11 +1,11 @@
 const Portfolio = require("./Portfolio.js")
-const ScenarioInput = require("./ScenarioInput.js")
+const StochConfig = require("./StochConfig.js")
 const ProjectionYear = require("./ProjectionYear.js")
-const ScenarioOutput = require("./ScenarioOutput.js")
+const Scenario = require("./Scenario.js")
 
 module.exports = {
   Portfolio,
-  ScenarioInput,
+  StochConfig,
   ProjectionYear,
-  ScenarioOutput,
+  Scenario,
 }

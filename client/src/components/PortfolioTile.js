@@ -1,28 +1,31 @@
 import React, { useState } from "react"
 import portfolioTotal from "./../utilities/portfolioTotal.js"
-import ScenarioSummaryTile from "./ScenarioSummaryTile.js"
+import StochConfigTile from "./StochConfigTile.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const PortfolioTile = (props) => {
   const portfolio = props.portfolio
-  const [showScenarios, setShowScenarios] = useState(false)
+  const [showConfigs, setShowConfigs] = useState(false)
 
-  const scenarioTiles = portfolio.scenarioInputs.map(scenarioInput => {
-    const matchedScenarioOutput = portfolio.scenarioOutputs.filter(scenarioOutput => {
-      
-      return scenarioOutput.scenarioInputsId == scenarioInput.id
-    })
-    return <ScenarioSummaryTile scenarioInput={scenarioInput} scenarioOutput={matchedScenarioOutput[0]} key={scenarioInput.id} />
+  const configTiles = portfolio.stochConfigs.map((stochConfig) => {
+    return (
+      <StochConfigTile
+        configIdForScens={props.configIdForScens}
+        setConfigIdForScens={props.setConfigIdForScens}
+        stochConfig={stochConfig}
+        key={stochConfig.id}
+      />
+    )
   })
-  console.log(scenarioTiles)
-  
+
   const toggleScenarios = () => {
-    setShowScenarios(!showScenarios)
+    setShowConfigs(!showConfigs)
   }
 
   return (
     <div className="portfolio-tile">
-      <table><tbody>
+      <table>
+        <tbody>
           <tr>
             <td>Portfolio Name:</td>
             <td className="portfolio-name">{portfolio.name}</td>
@@ -31,11 +34,20 @@ const PortfolioTile = (props) => {
             <td>Balance:</td>
             <td>{portfolioTotal(portfolio)}</td>
           </tr>
-      </tbody></table>
-      <span className="hover-button" onClick={toggleScenarios}>
-        Scenarios <FontAwesomeIcon icon="fas fa-chevron-circle-down" />
-      </span>
-      {showScenarios && scenarioTiles}
+        </tbody>
+      </table>
+      {!showConfigs ? (
+        <span className="hover-button" onClick={toggleScenarios}>
+          Stochastic Configurations{" "}
+          <FontAwesomeIcon icon="fas fa-chevron-circle-down" />
+        </span>
+      ) : (
+        <span className="hover-button" onClick={toggleScenarios}>
+          Stochastic Configurations{" "}
+          <FontAwesomeIcon icon="fas fa-chevron-circle-up" />
+        </span>
+      )}
+      {showConfigs && configTiles}
     </div>
   )
 }

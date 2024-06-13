@@ -1,7 +1,6 @@
 import Portfolio from "../models/Portfolio.js"
 import assetMix from "../utilities/assetMix.js"
-import ScenarioOutputSerializer from "./ScenarioOutputSerializer.js"
-import ScenarioInputSerializer from "./ScenarioInputSerializer.js"
+import StochConfigSerializer from "./StochConfigSerializer.js"
 
 class PortfolioSerializer {
   static dashboardData = async () => {
@@ -28,13 +27,7 @@ class PortfolioSerializer {
           serializedPortfolio[field] = portfolio[field]
         }
       }
-      serializedPortfolio["scenarioInputs"] = await ScenarioInputSerializer.dashboardData(portfolio)
-      const serializedScenarioOutputs = []
-      for (const scenarioInput of serializedPortfolio["scenarioInputs"]) {
-        const serializedScenarioOutput = await ScenarioOutputSerializer.dashboardData(scenarioInput)
-        serializedScenarioOutputs.push(serializedScenarioOutput)
-      }
-      serializedPortfolio["scenarioOutputs"] = serializedScenarioOutputs
+      serializedPortfolio["stochConfigs"] = await StochConfigSerializer.dashboardData(portfolio)
       return serializedPortfolio
     }))
     return serializedPortfolios

@@ -6,7 +6,7 @@
  * @param {Knex} knex
  */
 exports.up = async (knex) => {
-  return knex.schema.createTable("projection-years", (table) => {
+  return knex.schema.createTable("projectionYears", (table) => {
     table.bigIncrements("id")
     table.integer("calYear").notNullable()
     table.integer("age").notNullable()
@@ -46,11 +46,11 @@ exports.up = async (knex) => {
     table.float("endYrBalTotal").notNullable()
 
     table
-      .bigInteger("scenarioInputsId")
+      .bigInteger("scenarioId")
       .unsigned()
       .index()
       .notNullable()
-      .references("scenario-inputs.id")
+      .references("scenarios.id")
     table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now())
     table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now())
   })
