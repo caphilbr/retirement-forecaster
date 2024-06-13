@@ -13,14 +13,14 @@ class Portfolio extends Model {
   }
 
   static relationMappings() {
-    const { ScenarioInput } = require("./index.js")
+    const { StochConfig } = require("./index.js")
     return {
-      scenarioInputs: {
+      stochConfigs: {
         relation: Model.HasManyRelation,
-        modelClass: ScenarioInput,
+        modelClass: StochConfig,
         join: {
           from: "portfolios.id",
-          to: "scenario-inputs.portfolioId",
+          to: "stochConfigs.portfolioId",
         },
       },
     }

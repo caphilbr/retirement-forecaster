@@ -3,8 +3,8 @@ import { connection } from "../boot.js"
 import seederTakeWithdrawal from "./../services/seederTakeWithdrawal.js"
 import {
   Portfolio,
-  ScenarioInput,
-  ScenarioOutput,
+  StochConfig,
+  Scenario,
   ProjectionYear,
 } from "./../models/index.js"
 
@@ -21,7 +21,7 @@ class Seeder {
 
     console.log("Seeding a portfolio...")
     await Portfolio.query().insert({
-      name: "testPortfolio1",
+      name: "Test Portfolio #1",
       salary: salary,
       expenses: expenses,
       annualSavings: savings,
@@ -34,10 +34,11 @@ class Seeder {
     })
 
     // *********************** //
-    // Scenario #1
+    // Stoch Config #1
 
-    console.log("Seeding scenario input #1...")
-    await ScenarioInput.query().insert({
+    console.log("Seeding stochastic configuration #1...")
+    const stochConfig1 = await StochConfig.query().insertAndFetch({
+      numberOfScens: 100,
       targetRetAge: 58,
       deathAge: 95,
       savingsType: "fixed",
@@ -45,251 +46,140 @@ class Seeder {
       retSpendingDropPerc: 0.1,
       portfolioId: 1,
     })
-    let calYear = 2024
-    let age = 45
-    let isRetired = false
-    let isFrugal = false
-    let withdrawals = 0
-    let taxRate = 0.3
-    let taxes = taxRate * salary
-    let yieldReg = 0.06
-    let yieldRoth = 0.07
-    let yieldBank = 0.02
-    let yieldHomeEq = 0.03
-    let inflationRate = 0.025
-    let raisePerc = 0.03
-    let scenarioInputsId = 1
-    let loopCounter = 0
-    let exhaustAge = 0
 
-    console.log("Looping thru scenario #1 projection years...")
-    do {
-      loopCounter++
-      const begYrBalances = seederTakeWithdrawal(
-        initBalReg,
-        initBalRoth,
-        initBalBank,
-        initBalHomeEq,
-        withdrawals - savings,
-      )
-      let begYrBalReg = begYrBalances.newRegBal
-      let begYrBalRoth = begYrBalances.newRothBal
-      let begYrBalBank = begYrBalances.newBankBal
-      let begYrBalHomeEq = begYrBalances.newHomeEqBal
-      let begYrBalTotal =
-        begYrBalReg + begYrBalRoth + begYrBalBank + begYrBalHomeEq
-      let endYrBalReg = (begYrBalReg *= 1 + yieldReg)
-      let endYrBalRoth = (begYrBalRoth *= 1 + yieldRoth)
-      let endYrBalBank = (begYrBalBank *= 1 + yieldBank)
-      let endYrBalHomeEq = (begYrBalHomeEq *= 1 + yieldHomeEq)
-      let endYrBalTotal =
-        endYrBalReg + endYrBalRoth + endYrBalBank + endYrBalHomeEq
-      if (exhaustAge == 0 && begYrBalTotal < 0 && initBalTotal > 0) {
-        exhaustAge = age
+    console.log("Generating dummy scenario results...")
+    for (let scen = 1; scen <= 100; scen++) {
+      const retAge = Math.floor(58 + 5 * Math.random())
+      const balanceAtDeath = -500000 + 3000000 * Math.random()
+      let numYrsFrugal = 0
+      if (Math.random() > 0.8) {
+        numYrsFrugal += Math.floor(1 + 7 * Math.random())
       }
-      await ProjectionYear.query().insert({
-        calYear,
-        age,
-        isRetired,
-        isFrugal,
-        initBalReg,
-        initBalRoth,
-        initBalBank,
-        initBalHomeEq,
-        initBalTotal,
-        salary,
-        withdrawals,
-        taxRate,
-        taxes,
-        expenses,
-        savings,
-        begYrBalReg,
-        begYrBalRoth,
-        begYrBalBank,
-        begYrBalHomeEq,
-        begYrBalTotal,
-        yieldReg,
-        yieldRoth,
-        yieldBank,
-        yieldHomeEq,
-        inflationRate,
-        raisePerc,
-        endYrBalReg,
-        endYrBalRoth,
-        endYrBalBank,
-        endYrBalHomeEq,
-        endYrBalTotal,
-        scenarioInputsId,
+      const stochConfigsId = 1
+      await Scenario.query().insert({
+        retAge,
+        balanceAtDeath,
+        numYrsFrugal,
+        stochConfigsId,
       })
+    }
 
-      // calculate next year's starting & known values
-      calYear++
-      age++
-      if (age >= 58) {
-        isRetired = true
-      }
-      initBalReg = endYrBalReg
-      initBalRoth = endYrBalRoth
-      initBalBank = endYrBalBank
-      initBalHomeEq = endYrBalHomeEq
+    console.log("Computing stochastic results...")
+    await stochConfig1.getStochResults()
+    await StochConfig.query().update(stochConfig1)
+
+    for (let scen = 1; scen <= 100; scen++) {
+      console.log("Creating projection years for scenario # ", scen)
+      let calYear = 2024
+      let age = 45
+      let isRetired = false
+      let isFrugal = false
+      initBalReg = 455296
+      initBalRoth = 23598
+      initBalBank = 8654
+      initBalHomeEq = 829495
       initBalTotal = initBalReg + initBalRoth + initBalBank + initBalHomeEq
-      expenses *= 1 + inflationRate
-      if (age == 58) {
-        expenses *= 1 - 0.1
-      }
-      if (isRetired) {
-        salary = 0
-        withdrawals = expenses / (1 - taxRate)
-        taxes = withdrawals - expenses
-      } else {
-        salary *= 1 + raisePerc
-        withdrawals = 0
-        taxes = salary * taxRate
-      }
-      if (age == 94) {
-        console.log("Seeding scenario output")
-        await ScenarioOutput.query().insert({
-          retAge: 58,
-          numYrsFrugal: 0,
-          exhaustAge: exhaustAge,
-          balanceAtDeath: initBalTotal,
-          scenarioInputsId: scenarioInputsId,
+      salary = 94500
+      expenses = 54750
+      savings = 10250
+      let withdrawals = 0
+      let taxRate = 0.3
+      let taxes = taxRate * salary
+      let yieldReg = 0.06
+      let yieldRoth = 0.07
+      let yieldBank = 0.02
+      let yieldHomeEq = 0.03
+      let inflationRate = 0.025
+      let raisePerc = 0.03
+      let exhaustAge = 0
+      let scenarioId = scen
+
+      do {
+        const begYrBalances = seederTakeWithdrawal(
+          initBalReg,
+          initBalRoth,
+          initBalBank,
+          initBalHomeEq,
+          withdrawals - savings,
+        )
+        let begYrBalReg = begYrBalances.newRegBal
+        let begYrBalRoth = begYrBalances.newRothBal
+        let begYrBalBank = begYrBalances.newBankBal
+        let begYrBalHomeEq = begYrBalances.newHomeEqBal
+        let begYrBalTotal =
+          begYrBalReg + begYrBalRoth + begYrBalBank + begYrBalHomeEq
+        let endYrBalReg = (begYrBalReg *= 1 + yieldReg)
+        let endYrBalRoth = (begYrBalRoth *= 1 + yieldRoth)
+        let endYrBalBank = (begYrBalBank *= 1 + yieldBank)
+        let endYrBalHomeEq = (begYrBalHomeEq *= 1 + yieldHomeEq)
+        let endYrBalTotal =
+          endYrBalReg + endYrBalRoth + endYrBalBank + endYrBalHomeEq
+        if (exhaustAge == 0 && begYrBalTotal < 0 && initBalTotal > 0) {
+          exhaustAge = age
+        }
+
+        await ProjectionYear.query().insert({
+          calYear,
+          age,
+          isRetired,
+          isFrugal,
+          initBalReg,
+          initBalRoth,
+          initBalBank,
+          initBalHomeEq,
+          initBalTotal,
+          salary,
+          withdrawals,
+          taxRate,
+          taxes,
+          expenses,
+          savings,
+          begYrBalReg,
+          begYrBalRoth,
+          begYrBalBank,
+          begYrBalHomeEq,
+          begYrBalTotal,
+          yieldReg,
+          yieldRoth,
+          yieldBank,
+          yieldHomeEq,
+          inflationRate,
+          raisePerc,
+          endYrBalReg,
+          endYrBalRoth,
+          endYrBalBank,
+          endYrBalHomeEq,
+          endYrBalTotal,
+          scenarioId,
         })
-      }
-    } while (age < 95)
+  
+        // calculate next year's starting & known values
+        calYear++
+        age++
+        if (age >= 58) {
+          isRetired = true
+        }
+        initBalReg = endYrBalReg
+        initBalRoth = endYrBalRoth
+        initBalBank = endYrBalBank
+        initBalHomeEq = endYrBalHomeEq
+        initBalTotal = initBalReg + initBalRoth + initBalBank + initBalHomeEq
+        expenses *= 1 + inflationRate
+        if (age == 58) {
+          expenses *= 1 - 0.1
+        }
+        if (isRetired) {
+          salary = 0
+          withdrawals = expenses / (1 - taxRate)
+          taxes = withdrawals - expenses
+        } else {
+          salary *= 1 + raisePerc
+          withdrawals = 0
+          taxes = salary * taxRate
+        }
+      } while (age < 95)
+    }
 
-    // *********************** //
-    // Scenario #2
-
-    console.log("Seeding scenario input #2...")
-    await ScenarioInput.query().insert({
-      targetRetAge: 65,
-      deathAge: 92,
-      savingsType: "fixed",
-      savingsPerc: 0.05,
-      retSpendingDropPerc: 0.15,
-      portfolioId: 1,
-    })
-    initBalReg = 455296
-    initBalRoth = 23598
-    initBalBank = 8654
-    initBalHomeEq = 829495
-    initBalTotal = initBalReg + initBalRoth + initBalBank + initBalHomeEq
-    salary = 94500
-    expenses = 54750
-    savings = 10250
-    calYear = 2024
-    age = 45
-    isRetired = false
-    isFrugal = false
-    withdrawals = 0
-    taxRate = 0.3
-    taxes = taxRate * salary
-    yieldReg = 0.07
-    yieldRoth = 0.08
-    yieldBank = 0.015
-    yieldHomeEq = 0.035
-    inflationRate = 0.03
-    raisePerc = 0.025
-    scenarioInputsId = 2
-    loopCounter = 0
-    exhaustAge = 0
-
-    console.log("Looping thru scenario #2 projection years...")
-    do {
-      loopCounter++
-      const begYrBalances = seederTakeWithdrawal(
-        initBalReg,
-        initBalRoth,
-        initBalBank,
-        initBalHomeEq,
-        withdrawals - savings,
-      )
-      let begYrBalReg = begYrBalances.newRegBal
-      let begYrBalRoth = begYrBalances.newRothBal
-      let begYrBalBank = begYrBalances.newBankBal
-      let begYrBalHomeEq = begYrBalances.newHomeEqBal
-      let begYrBalTotal =
-        begYrBalReg + begYrBalRoth + begYrBalBank + begYrBalHomeEq
-      let endYrBalReg = (begYrBalReg *= 1 + yieldReg)
-      let endYrBalRoth = (begYrBalRoth *= 1 + yieldRoth)
-      let endYrBalBank = (begYrBalBank *= 1 + yieldBank)
-      let endYrBalHomeEq = (begYrBalHomeEq *= 1 + yieldHomeEq)
-      let endYrBalTotal =
-        endYrBalReg + endYrBalRoth + endYrBalBank + endYrBalHomeEq
-      if (exhaustAge == 0 && begYrBalTotal < 0 && initBalTotal > 0) {
-        exhaustAge = age
-      }
-      await ProjectionYear.query().insert({
-        calYear,
-        age,
-        isRetired,
-        isFrugal,
-        initBalReg,
-        initBalRoth,
-        initBalBank,
-        initBalHomeEq,
-        initBalTotal,
-        salary,
-        withdrawals,
-        taxRate,
-        taxes,
-        expenses,
-        savings,
-        begYrBalReg,
-        begYrBalRoth,
-        begYrBalBank,
-        begYrBalHomeEq,
-        begYrBalTotal,
-        yieldReg,
-        yieldRoth,
-        yieldBank,
-        yieldHomeEq,
-        inflationRate,
-        raisePerc,
-        endYrBalReg,
-        endYrBalRoth,
-        endYrBalBank,
-        endYrBalHomeEq,
-        endYrBalTotal,
-        scenarioInputsId,
-      })
-
-      // calculate next year's starting & known values
-      calYear++
-      age++
-      if (age >= 65) {
-        isRetired = true
-      }
-      initBalReg = endYrBalReg
-      initBalRoth = endYrBalRoth
-      initBalBank = endYrBalBank
-      initBalHomeEq = endYrBalHomeEq
-      initBalTotal = initBalReg + initBalRoth + initBalBank + initBalHomeEq
-      expenses *= 1 + inflationRate
-      if (age == 65) {
-        expenses *= 1 - 0.15
-      }
-      if (isRetired) {
-        salary = 0
-        withdrawals = expenses / (1 - taxRate)
-        taxes = withdrawals - expenses
-      } else {
-        salary *= 1 + raisePerc
-        withdrawals = 0
-        taxes = salary * taxRate
-      }
-      if (age == 91) {
-        console.log("Seeding scenario output")
-        await ScenarioOutput.query().insert({
-          retAge: 65,
-          numYrsFrugal: 0,
-          exhaustAge: exhaustAge,
-          balanceAtDeath: initBalTotal,
-          scenarioInputsId: scenarioInputsId,
-        })
-      }
-    } while (age < 92)
 
     console.log("Done!")
     await connection.destroy()

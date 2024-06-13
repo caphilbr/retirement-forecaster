@@ -2,7 +2,7 @@ const Model = require("./Model.js")
 
 class ProjectionYear extends Model {
   static get tableName() {
-    return "projection-years"
+    return "projectionYears"
   }
 
   static get jsonSchema() {
@@ -12,16 +12,16 @@ class ProjectionYear extends Model {
   }
 
   static relationMappings() {
-    const { ScenarioInput } = require("./index.js")
+    const { Scenario } = require("./index.js")
     return {
       scenarioUnput: {
-        relation: Model.HasOneRelation,
-        modelClass: ScenarioInput,
+        relation: Model.BelongsToOneRelation,
+        modelClass: Scenario,
         join: {
-          from: "projection-years.scenario-inputsId",
-          to: "scenario-inputs.id",
-        },
-      },
+          from: "projectionYears.scenarioId",
+          to: "scenarios.id",
+        }
+      }
     }
   }
 }
