@@ -5,7 +5,7 @@ const StochConfigTile = (props) => {
   const stochConfig = props.stochConfig
 
   const handleShowScenarios = () => {
-    if (props.configIdForScens == null) {
+    if (props.configIdForScens == null || props.configIdForScens != stochConfig.id) {
       props.setConfigIdForScens(stochConfig.id)
     } else {
       props.setConfigIdForScens(null)
@@ -33,8 +33,8 @@ const StochConfigTile = (props) => {
           <td className="narrow-config-col">{(stochConfig.retSpendingDropPerc*100).toFixed(0)}%</td>
         </tr>
       </tbody></table>
-      {props.configIdForScens ?
-        <span onClick={handleShowScenarios} className="button-show-scenarios">Hide Scenarios</span>
+      {props.configIdForScens == stochConfig.id ?
+        <span onClick={handleShowScenarios} className="button-show-scenarios-hide">Hide Scenarios</span>
       :
         <span onClick={handleShowScenarios} className="button-show-scenarios">Show Scenarios</span>
       }

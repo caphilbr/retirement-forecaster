@@ -60,8 +60,13 @@ body {
   margin-left: 2rem;
 }
 
-.add-button {
+.add-portfolio-button {
   margin-left: 2rem;
+}
+
+.add-config-button {
+  margin-top: 1rem;
+  margin-left: 0.5rem;
 }
 
 .portfolio-tile {
@@ -182,11 +187,20 @@ body {
   padding: 0;
 }
 
+
 .button-show-scenarios {
   @extend .button;
   padding: 0.25rem;
   background-color: var(--dark-green);
   font-weight: bold;
+  border-radius: 0.25rem;
+}
+  
+.button-show-scenarios-hide {
+  @extend .button-show-scenarios;
+  border: 1px black solid;
+  background-color: yellow;
+  color: black;
 }
 
 .button-show-scenarios:hover {
@@ -198,8 +212,34 @@ body {
   padding: 0.25rem;
   background-color: var(--dark-green);
   font-weight: bold;
+  border-radius: 0.25rem;
 }
 
 .button-show-projection:hover {
   background-color: rgb(0, 80, 0);
+}
+
+.button-show-projection-hide {
+  @extend .button-show-projection;
+  border: 1px black solid;
+  background-color: yellow;
+  color: black;
+}
+
+.projection-container{
+  max-height: 25rem;
+  overflow-y: auto;
+}
+
+.projection-table {
+  font-size: 80%;
+}
+
+.projection-table tr:nth-child(even) {
+  background-color: transparent;
+}
+
+.projection-table th, .projection-table td {
+  padding: 0.5px 2px;
+  border: 1px solid #ddd;
 }

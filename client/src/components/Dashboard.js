@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import PortfolioTile from "./PortfolioTile"
 import ScenarioTile from "./ScenarioTile.js"
+import Projection from "./Projection.js"
 import getScenariosFromPortfolios from "../services/getScenariosFromPortfolios.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -20,9 +21,9 @@ const Dashboard = () => {
     }
   }
 
-  const getProjection = async () => {
+  const getProjection = async (scenarioId) => {
     try {
-      const response = "??"
+      const response = await fetch(`/api/v1/projection/${scenarioId}`)
       const parsedData = await response.json()
       setProjection(parsedData.projection)
     } catch (error) {
@@ -30,14 +31,19 @@ const Dashboard = () => {
     }
   }
 
-  if(scenIdForProj) {
-    getProjection()
+  const populateProjection = (scenarioId) => {
+    setScenIdForProj(scenarioId)
+    if (scenarioId == null || configIdForScens == null) {
+      setProjection([])
+    } else {
+      getProjection(scenarioId)
+    }
   }
-  
+
   useEffect(() => {
     getPortfolios()
   }, [])
-  
+
   const portfolioTiles = portfolios.map((portfolio) => {
     return (
       <PortfolioTile
@@ -49,15 +55,19 @@ const Dashboard = () => {
     )
   })
 
-  let scenarioTiles = null
+  let projectionDisplay = "No scenario selected"  
+  if (scenIdForProj && configIdForScens) {
+    projectionDisplay = <Projection projection={projection} />
+  }
+
+
+  let scenarioTiles = "No configuration selected"
   if (configIdForScens) {
     const scenarios = getScenariosFromPortfolios(portfolios, configIdForScens)
     scenarioTiles = scenarios.map((scenario) => {
-      return <ScenarioTile scenario={scenario} scenIdForProj={scenIdForProj} setScenIdForProj={setScenIdForProj} key={scenario.id} />
+      return <ScenarioTile scenario={scenario} scenIdForProj={scenIdForProj} populateProjection={populateProjection} key={scenario.id} />
     })
   }
-
-  const projectionDisplay = <p>some sort of iteration and table to display the projection years</p>
 
   return (
     <div className="background-color">
@@ -68,12 +78,12 @@ const Dashboard = () => {
             <h3>
               <FontAwesomeIcon icon="fas fa-file-invoice-dollar" /> Portfolios
             </h3>
+            <h5 className="add-portfolio-button">
+              <FontAwesomeIcon icon="fas fa-plus-circle" /> Add Portfolio
+            </h5>
             <div className="cell small-12 horiz-overflow-container">
               {portfolioTiles}
             </div>
-            <h5 className="add-button">
-              <FontAwesomeIcon icon="fas fa-plus-circle" /> Add New Portfolio
-            </h5>
           </div>
           <div className="cell small-12 dashboard-container">
             <h3>
@@ -82,7 +92,7 @@ const Dashboard = () => {
             <div className="cell small-2 horiz-overflow-container">
               {scenarioTiles}
             </div>
-            <h5 className="add-button">
+            <h5 className="add-portfolio-button">
               <FontAwesomeIcon icon="fas fa-sliders-h" /> Sort/Filter Scenarios
             </h5>
           </div>
@@ -90,7 +100,7 @@ const Dashboard = () => {
             <h3>
               <FontAwesomeIcon icon="fas fa-receipt" /> Annual Projection
             </h3>
-            <div className="cell small-2 horiz-overflow-container">
+            <div className="cell small-2 horiz-overflow-container projection-container">
               {projectionDisplay}
             </div>
           </div>

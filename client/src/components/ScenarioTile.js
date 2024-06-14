@@ -4,10 +4,10 @@ import formatCurrency from "../utilities/formatCurrency.js"
 const ScenarioTile = (props) => {
   
   const handleShowProjection = () => {
-    if (props.scenIdForProj == null) {
-      props.setScenIdForProj(props.scenario.id)
+    if (props.scenIdForProj == null || props.scenIdForProj != props.scenario.id) {
+      props.populateProjection(props.scenario.id)
     } else {
-      props.setScenIdForProj(null)
+      props.populateProjection(null)
     }
   }
 
@@ -27,8 +27,8 @@ const ScenarioTile = (props) => {
           <td className="narrow-scen-col">{props.scenario.numYrsFrugal}</td>
         </tr>
       </tbody></table>
-      {props.scenIdForProj ?
-        <span onClick={handleShowProjection} className="button-show-projection">Hide Projection</span>
+      {props.scenIdForProj == props.scenario.id ?
+        <span onClick={handleShowProjection} className="button-show-projection-hide">Hide Projection</span>
       :
         <span onClick={handleShowProjection} className="button-show-projection">Show Projection</span>
       }
