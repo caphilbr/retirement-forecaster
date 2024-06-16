@@ -90,12 +90,12 @@ const PortfolioTile = (props) => {
         </tbody>
       </table>
       {!showDetails ? (
-        <span className="hover-button" onClick={toggleDetails}>
+        <span className="more-button" onClick={toggleDetails}>
           Show Portfolio Details{" "}
           <FontAwesomeIcon icon="fas fa-chevron-circle-down" />
         </span>
       ) : (
-        <span className="hover-button" onClick={toggleDetails}>
+        <span className="more-button" onClick={toggleDetails}>
           Hide Details{" "}
           <FontAwesomeIcon icon="fas fa-chevron-circle-up" />
         </span>
@@ -103,14 +103,14 @@ const PortfolioTile = (props) => {
       {showDetails && portfolioDetails}
       {!showConfigs ? (
         <>
-          <br/><span className="hover-button" onClick={toggleScenarios}>
+          <br/><span className="more-button" onClick={toggleScenarios}>
             Stochastic Configurations{" "}
             <FontAwesomeIcon icon="fas fa-chevron-circle-down" />
           </span>
         </>
       ) : (
         <>
-          <br/><span className="hover-button" onClick={toggleScenarios}>
+          <br/><span className="more-button" onClick={toggleScenarios}>
             Stochastic Configurations{" "}
             <FontAwesomeIcon icon="fas fa-chevron-circle-up" />
           </span>
