@@ -50,7 +50,6 @@ const Dashboard = () => {
     setShowNewPortfolio(!showNewPorfolio)
   }
 
-
   const portfolioTiles = portfolios.map((portfolio) => {
     return (
       <PortfolioTile
@@ -62,24 +61,35 @@ const Dashboard = () => {
     )
   })
 
-  let projectionDisplay = "No scenario selected"  
+  let projectionDisplay = "No scenario selected"
   if (scenIdForProj && configIdForScens) {
     projectionDisplay = <Projection projection={projection} />
   }
-
 
   let scenarioTiles = "No configuration selected"
   if (configIdForScens) {
     const scenarios = getScenariosFromPortfolios(portfolios, configIdForScens)
     scenarioTiles = scenarios.map((scenario) => {
-      return <ScenarioTile scenario={scenario} scenIdForProj={scenIdForProj} populateProjection={populateProjection} key={scenario.id} />
+      return (
+        <ScenarioTile
+          scenario={scenario}
+          scenIdForProj={scenIdForProj}
+          populateProjection={populateProjection}
+          key={scenario.id}
+        />
+      )
     })
   }
 
   return (
     <div className="background-color">
-      {showNewPorfolio ? <NewPortfolioForm toggleNewPortfolio={toggleNewPortfolio}/> : null}
-      {/* {showNewPorfolio ? <NewPortfolioForm /> : null} */}
+      {showNewPorfolio ? (
+        <NewPortfolioForm
+          portfolios={portfolios}
+          setPortfolios={setPortfolios}
+          toggleNewPortfolio={toggleNewPortfolio}
+        />
+      ) : null}
       <div className="grid-x grid-padding-x">
         <h1 className="cell small-12 dashboard-title">Retirement Forecaster</h1>
         <div className="dashboard-body">

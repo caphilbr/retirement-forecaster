@@ -22,50 +22,48 @@ const PortfolioTile = (props) => {
     )
   })
 
-  if (configTiles.length > 0) {
-    configTiles = [
-      <h6 className="add-config-button">
-        <FontAwesomeIcon icon="fas fa-plus-circle" /> Add Configuration
-      </h6>,
-      ...configTiles
-    ]
-  }
+  configTiles = [
+    <h6 key="addButton" className="add-config-button">
+      <FontAwesomeIcon icon="fas fa-plus-circle" /> Add Configuration
+    </h6>,
+    ...configTiles,
+  ]
 
   const portfolioDetails = (
-    <table><tbody>
-      <tr>
-        <td>Salary:</td>
-        <td>{formatCurrency(portfolio.salary, false)}</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Expenses:</td>
-        <td>{formatCurrency(portfolio.expenses, false)}</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Registered Savings:</td>
-        <td>{formatCurrency(portfolio.balanceReg, false)}</td>
-        <td>({showAssetMix(portfolio.mixReg)})</td>
-      </tr>
-      <tr>
-        <td>Roth Savings:</td>
-        <td>{formatCurrency(portfolio.balanceRoth, false)}</td>
-        <td>({showAssetMix(portfolio.mixRoth)})</td>
-      </tr>
-      <tr>
-        <td>Bank Savings:</td>
-        <td>{formatCurrency(portfolio.balanceBank, false)}</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Home Equity:</td>
-        <td>{formatCurrency(portfolio.balanceHomeEq, false)}</td>
-        <td></td>
-      </tr>
-
-  </tbody></table>
-
+    <table>
+      <tbody>
+        <tr>
+          <td>Salary:</td>
+          <td>{formatCurrency(portfolio.salary, false)}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Expenses:</td>
+          <td>{formatCurrency(portfolio.expenses, false)}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Registered Savings:</td>
+          <td>{formatCurrency(portfolio.balanceReg, false)}</td>
+          <td>({showAssetMix(portfolio.mixReg)})</td>
+        </tr>
+        <tr>
+          <td>Roth Savings:</td>
+          <td>{formatCurrency(portfolio.balanceRoth, false)}</td>
+          <td>({showAssetMix(portfolio.mixRoth)})</td>
+        </tr>
+        <tr>
+          <td>Bank Savings:</td>
+          <td>{formatCurrency(portfolio.balanceBank, false)}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Home Equity:</td>
+          <td>{formatCurrency(portfolio.balanceHomeEq, false)}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
   )
 
   const toggleScenarios = () => {
@@ -101,21 +99,22 @@ const PortfolioTile = (props) => {
         </span>
       ) : (
         <span className="more-button" onClick={toggleDetails}>
-          Hide Details{" "}
-          <FontAwesomeIcon icon="fas fa-chevron-circle-up" />
+          Hide Details <FontAwesomeIcon icon="fas fa-chevron-circle-up" />
         </span>
       )}
       {showDetails && portfolioDetails}
       {!showConfigs ? (
         <>
-          <br/><span className="more-button" onClick={toggleScenarios}>
+          <br />
+          <span className="more-button" onClick={toggleScenarios}>
             Stochastic Configurations{" "}
             <FontAwesomeIcon icon="fas fa-chevron-circle-down" />
           </span>
         </>
       ) : (
         <>
-          <br/><span className="more-button" onClick={toggleScenarios}>
+          <br />
+          <span className="more-button" onClick={toggleScenarios}>
             Stochastic Configurations{" "}
             <FontAwesomeIcon icon="fas fa-chevron-circle-up" />
           </span>
