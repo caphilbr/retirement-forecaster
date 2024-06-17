@@ -7,6 +7,7 @@ class PortfolioSerializer {
     const allowedFields = [
       "id",
       "name",
+      "date",
       "salary",
       "expenses",
       "annualSavings",

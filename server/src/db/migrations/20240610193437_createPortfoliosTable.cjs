@@ -9,6 +9,7 @@ exports.up = async (knex) => {
   return knex.schema.createTable("portfolios", (table) => {
     table.bigIncrements("id")
     table.string("name").notNullable()
+    table.timestamp("date").notNullable().defaultTo(knex.fn.now())
     table.float("salary").notNullable().defaultTo(0.0)
     table.float("expenses").notNullable()
     table.float("annualSavings").notNullable().defaultTo(0.0)

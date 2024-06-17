@@ -62,7 +62,14 @@ body {
 
 .add-portfolio-button {
   margin-left: 2rem;
+  cursor: pointer;
 }
+
+.add-portfolio-button:hover {
+  font-weight: bold;
+  font-size: 140%;
+}
+
 
 .add-config-button {
   margin-top: 1rem;
@@ -106,12 +113,12 @@ body {
   font-weight: bold;
 }
 
-.hover-button {
+.more-button {
   cursor: pointer;
   border-radius: 0.25rem;
 }
 
-.hover-button:hover {
+.more-button:hover {
   font-weight: bold;
 }
 
@@ -242,4 +249,81 @@ body {
 .projection-table th, .projection-table td {
   padding: 0.5px 2px;
   border: 1px solid #ddd;
+}
+
+.new-portfolio-form {
+  z-index: 3;
+  position: fixed;
+  height: 85vh;
+  width: 90vw;
+  background-color: var(--light-green);
+  border-radius: 0.5rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 7.5vh;
+  align-self: center;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  padding: 2rem 1rem 1rem 1rem;
+  overflow-y: auto;
+}
+
+.new-portfolio-form label {
+  margin-top: 1rem;
+}
+
+.gray-background {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+.form-button {
+  @extend .button;
+  background-color: var(--dark-green);
+  padding: 0.25rem;
+  height: 1.5rem;
+  border-radius: 0.25rem;
+  display: inline;
+  margin-right: 2rem;
+}
+
+.form-button:hover {
+  background-color: rgb(0, 80, 0);
+}
+
+.form-button-container {
+  text-align: center;
+  width: 100%;
+  padding: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.slider-container {
+  text-align: center;
+  display: inline;
+}
+
+.slider-container label {
+  display: inline;
+  margin-left: 0.25rem;
+}
+
+.slider-container input {
+  width: 14%;
+}
+
+.form-error {
+  padding: 0.1rem;
+  padding-left: 0.25rem;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  font-size: 100%;
 }

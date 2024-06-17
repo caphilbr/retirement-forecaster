@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import portfolioTotal from "./../utilities/portfolioTotal.js"
 import formatCurrency from "../utilities/formatCurrency.js"
+import formatDate from "../utilities/formatDate.js"
 import showAssetMix from "../utilities/showAssetMix.js"
 import StochConfigTile from "./StochConfigTile.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -87,15 +88,19 @@ const PortfolioTile = (props) => {
             <td>Balance:</td>
             <td>{portfolioTotal(portfolio)}</td>
           </tr>
+          <tr>
+            <td>As Of Date:</td>
+            <td>{formatDate(portfolio.date)}</td>
+          </tr>
         </tbody>
       </table>
       {!showDetails ? (
-        <span className="hover-button" onClick={toggleDetails}>
+        <span className="more-button" onClick={toggleDetails}>
           Show Portfolio Details{" "}
           <FontAwesomeIcon icon="fas fa-chevron-circle-down" />
         </span>
       ) : (
-        <span className="hover-button" onClick={toggleDetails}>
+        <span className="more-button" onClick={toggleDetails}>
           Hide Details{" "}
           <FontAwesomeIcon icon="fas fa-chevron-circle-up" />
         </span>
@@ -103,14 +108,14 @@ const PortfolioTile = (props) => {
       {showDetails && portfolioDetails}
       {!showConfigs ? (
         <>
-          <br/><span className="hover-button" onClick={toggleScenarios}>
+          <br/><span className="more-button" onClick={toggleScenarios}>
             Stochastic Configurations{" "}
             <FontAwesomeIcon icon="fas fa-chevron-circle-down" />
           </span>
         </>
       ) : (
         <>
-          <br/><span className="hover-button" onClick={toggleScenarios}>
+          <br/><span className="more-button" onClick={toggleScenarios}>
             Stochastic Configurations{" "}
             <FontAwesomeIcon icon="fas fa-chevron-circle-up" />
           </span>
