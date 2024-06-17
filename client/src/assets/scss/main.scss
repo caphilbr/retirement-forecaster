@@ -264,8 +264,12 @@ body {
   align-self: center;
   left: 50%;
   transform: translate(-50%, 0%);
-  padding: 1rem 1rem 0 1rem;
-  text-align: center;
+  padding: 2rem 1rem 1rem 1rem;
+  overflow-y: auto;
+}
+
+.new-portfolio-form label {
+  margin-top: 1rem;
 }
 
 .gray-background {
@@ -295,4 +299,31 @@ body {
 .form-button-container {
   text-align: center;
   width: 100%;
+  padding: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.slider-container {
+  text-align: center;
+  display: inline;
+}
+
+.slider-container label {
+  display: inline;
+  margin-left: 0.25rem;
+}
+
+.slider-container input {
+  width: 14%;
+}
+
+.form-error {
+  padding: 0.1rem;
+  padding-left: 0.25rem;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  font-size: 100%;
 }

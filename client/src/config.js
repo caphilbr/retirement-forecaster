@@ -1,9 +1,14 @@
 const config = {
   nodeEnv: process.env["NODE_ENV"] || "development",
   validation: {
-    email: {
+    currency: {
       regexp: {
-        emailRegex: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        currencyRegex: /^(\$)?(-?\d+(,\d{3})*(\.\d{1,2})?)?$/,
+      },
+    },
+    date: {
+      regexp: {
+        dateRegex: /^\d{4}-\d{2}-\d{2}$/,
       },
     },
   },

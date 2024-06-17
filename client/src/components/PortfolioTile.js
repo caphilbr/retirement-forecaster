@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import portfolioTotal from "./../utilities/portfolioTotal.js"
 import formatCurrency from "../utilities/formatCurrency.js"
+import formatDate from "../utilities/formatDate.js"
 import showAssetMix from "../utilities/showAssetMix.js"
 import StochConfigTile from "./StochConfigTile.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -86,6 +87,10 @@ const PortfolioTile = (props) => {
           <tr>
             <td>Balance:</td>
             <td>{portfolioTotal(portfolio)}</td>
+          </tr>
+          <tr>
+            <td>As Of Date:</td>
+            <td>{formatDate(portfolio.date)}</td>
           </tr>
         </tbody>
       </table>
