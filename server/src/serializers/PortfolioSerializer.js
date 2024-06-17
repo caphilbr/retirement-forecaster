@@ -33,6 +33,34 @@ class PortfolioSerializer {
     }))
     return serializedPortfolios
   }
+
+  static postPortfolio = (portfolio) => {
+    const allowedFields = [
+      "id",
+      "name",
+      "date",
+      "salary",
+      "expenses",
+      "annualSavings",
+      "balanceReg",
+      "mixReg",
+      "balanceRoth",
+      "mixRoth",
+      "balanceBank",
+      "balanceHomeEq"
+    ]
+    const serializedPortfolio = {}
+    for(const field of allowedFields) {
+      if(field == "mixReg" || field == "mixRoth") {
+        serializedPortfolio[field] = assetMix(portfolio[field])
+      } else {
+        serializedPortfolio[field] = portfolio[field]
+      }
+    }
+    serializedPortfolio["stochConfigs"] = []
+    return serializedPortfolio
+  }
+
 }
 
 export default PortfolioSerializer

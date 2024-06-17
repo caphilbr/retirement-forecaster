@@ -159,7 +159,6 @@ const NewPortfolioForm = (props) => {
       }
     }
 
-    console.log("newErrors ->",newErrors)
     setErrors(newErrors)
     if (Object.keys(newErrors).length === 0) {
       return true
@@ -167,9 +166,37 @@ const NewPortfolioForm = (props) => {
     return false
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async event => {
     event.preventDefault()
-    validateInput(formPayload)
+    if (validateInput(formPayload)) {
+      try {
+        const response = await fetch("/api/v1/portfolio", {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json",
+          }),
+          body: JSON.stringify(formPayload),
+        })
+        if (!response.ok) {
+          const errorMessage = `${response.status} (${response.statusText})`
+          const error = new Error(errorMessage)
+          throw error
+        } else {
+          const parsedData = await response.json()
+
+          console.log(props.portfolios)
+          const updatedPortfolios = [
+            ...props.portfolios,
+            parsedData.portfolio
+          ]
+          console.log(updatedPortfolios)
+          props.setPortfolios(updatedPortfolios)
+          props.toggleNewPortfolio()
+        }
+      } catch(error) {
+        console.log('error in posting new portfolio: ', error)
+      }
+    }
   }
   console.log(formPayload)
   
