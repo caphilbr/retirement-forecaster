@@ -184,12 +184,10 @@ const NewPortfolioForm = (props) => {
         } else {
           const parsedData = await response.json()
 
-          console.log(props.portfolios)
           const updatedPortfolios = [
             ...props.portfolios,
             parsedData.portfolio
           ]
-          console.log(updatedPortfolios)
           props.setPortfolios(updatedPortfolios)
           props.toggleNewPortfolio()
         }
@@ -198,7 +196,6 @@ const NewPortfolioForm = (props) => {
       }
     }
   }
-  console.log(formPayload)
   
   return (
     <div className="gray-background">

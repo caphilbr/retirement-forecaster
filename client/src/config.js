@@ -11,6 +11,16 @@ const config = {
         dateRegex: /^\d{4}-\d{2}-\d{2}$/,
       },
     },
+    integer: {
+      regexp: {
+        integerRegex: /^-\d+$|^0$|\d+$/,
+      }
+    },
+    percent: {
+      regexp: {
+        percentRegex: /^0$|^(0?\.\d{1,3})$|^1(\.0?)?$/,
+      }
+    }
   },
 }
 

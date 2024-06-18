@@ -16,6 +16,7 @@ class StochConfigSerializer {
       "percRetAtTgt",
       "percExhaust",
       "percFrugal",
+      "portfolioId"
     ]
     const stochConfigs = await portfolio.$relatedQuery("stochConfigs")
     const serializedstochConfigs = await Promise.all(stochConfigs.map(async stochConfig => {
@@ -28,6 +29,31 @@ class StochConfigSerializer {
       return serializedstochConfig
     }))
     return serializedstochConfigs
+  }
+
+  static postConfig = (stochConfig) => {
+    const allowedFields = [
+      "id",
+      "numberOfScens",
+      "targetRetAge",
+      "deathAge",
+      "savingsType",
+      "savingsPerc",
+      "retSpendingDropPerc",
+      "avgRetAge",
+      "avgBalAtDeath",
+      "avgFrugalYrs",
+      "percRetAtTgt",
+      "percExhaust",
+      "percFrugal",
+      "portfolioId"
+    ]
+    const serializedstochConfig = {}
+    allowedFields.forEach(field => {
+      serializedstochConfig[field] = stochConfig[field]
+    })
+    serializedstochConfig["scenarios"] = []
+    return serializedstochConfig    
   }
 }
 

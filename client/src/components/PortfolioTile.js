@@ -22,8 +22,13 @@ const PortfolioTile = (props) => {
     )
   })
 
+  const addConfigClick = () => {
+    props.setSelectedPortfolioId(portfolio.id)
+    props.toggleNewConfig()
+  }
+
   configTiles = [
-    <h6 key="addButton" className="add-config-button">
+    <h6 key="addButton" className="add-config-button" onClick={addConfigClick}>
       <FontAwesomeIcon icon="fas fa-plus-circle" /> Add Configuration
     </h6>,
     ...configTiles,

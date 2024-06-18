@@ -1,8 +1,11 @@
 import express from "express"
 import PortfolioSerializer from "./../../../serializers/PortfolioSerializer.js"
 import Portfolio from "../../../models/Portfolio.js"
+import portfolioConfigRouter from "./portfolioConfigRouter.js"
 
 const portfolioRouter = new express.Router()
+
+portfolioRouter.use("/:id/stochConfig", portfolioConfigRouter)
 
 portfolioRouter.get("/", async (req, res) => {
   try {

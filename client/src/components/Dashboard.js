@@ -3,6 +3,7 @@ import PortfolioTile from "./PortfolioTile"
 import ScenarioTile from "./ScenarioTile.js"
 import Projection from "./Projection.js"
 import NewPortfolioForm from "./NewPortfolioForm.js"
+import NewConfigForm from "./NewConfigForm.js"
 import getScenariosFromPortfolios from "../services/getScenariosFromPortfolios.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
@@ -12,6 +13,8 @@ const Dashboard = () => {
   const [configIdForScens, setConfigIdForScens] = useState(null)
   const [scenIdForProj, setScenIdForProj] = useState(null)
   const [showNewPorfolio, setShowNewPortfolio] = useState(false)
+  const [showNewConfig, setShowNewConfig] = useState(false)
+  const [selectedPortfolioId, setSelectedPortfolioId] = useState(null)
 
   const getPortfolios = async () => {
     try {
@@ -48,7 +51,13 @@ const Dashboard = () => {
 
   const toggleNewPortfolio = () => {
     setShowNewPortfolio(!showNewPorfolio)
+    }
+    
+  const toggleNewConfig = () => {
+    setShowNewConfig(!showNewConfig)
   }
+
+
 
   const portfolioTiles = portfolios.map((portfolio) => {
     return (
@@ -56,7 +65,9 @@ const Dashboard = () => {
         portfolio={portfolio}
         configIdForScens={configIdForScens}
         setConfigIdForScens={setConfigIdForScens}
+        setSelectedPortfolioId={setSelectedPortfolioId}
         key={portfolio.id}
+        toggleNewConfig={toggleNewConfig}
       />
     )
   })
@@ -90,6 +101,15 @@ const Dashboard = () => {
           toggleNewPortfolio={toggleNewPortfolio}
         />
       ) : null}
+      {showNewConfig ? (
+        <NewConfigForm
+          portfolios={portfolios}
+          setPortfolios={setPortfolios}
+          toggleNewConfig={toggleNewConfig}
+          portfolioId={selectedPortfolioId}
+        />
+      ) : null}
+
       <div className="grid-x grid-padding-x">
         <h1 className="cell small-12 dashboard-title">Retirement Forecaster</h1>
         <div className="dashboard-body">
