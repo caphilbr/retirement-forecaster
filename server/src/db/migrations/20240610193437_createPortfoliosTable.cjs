@@ -10,6 +10,7 @@ exports.up = async (knex) => {
     table.bigIncrements("id")
     table.string("name").notNullable()
     table.timestamp("date").notNullable().defaultTo(knex.fn.now())
+    table.integer("age").notNullable()
     table.float("salary").notNullable().defaultTo(0.0)
     table.float("expenses").notNullable()
     table.float("annualSavings").notNullable().defaultTo(0.0)

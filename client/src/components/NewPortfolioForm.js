@@ -9,6 +9,7 @@ const NewPortfolioForm = (props) => {
   const [formPayload, setFormPayload] = useState({
     name: "",
     date: formatDate(new Date(), "forForm"),
+    age: "0",
     salary: "0",
     expenses: "0",
     annualSavings: "0",
@@ -43,6 +44,7 @@ const NewPortfolioForm = (props) => {
     const {
       name,
       date,
+      age,
       salary,
       expenses,
       annualSavings,
@@ -55,6 +57,7 @@ const NewPortfolioForm = (props) => {
     } = payload
     const currencyRegexp = config.validation.currency.regexp.currencyRegex
     const dateRegexp = config.validation.date.regexp.dateRegex
+    const integerRegexp = config.validation.integer.regexp.integerRegex
     let newErrors = {}
     if (name.trim() == "") {
       newErrors = {
@@ -72,6 +75,24 @@ const NewPortfolioForm = (props) => {
       newErrors = {
         ...newErrors,
         salary: "amount cannot be blank",
+      }
+    }
+    if (!age.match(integerRegexp)) {
+      newErrors = {
+        ...newErrors,
+        age: "must be an integer",
+      }
+    }
+    if (age.trim() == "") {
+      newErrors = {
+        ...newErrors,
+        age: "amount cannot be blank",
+      }
+    }
+    if (age < 0 || age >= 110) {
+      newErrors = {
+        ...newErrors,
+        age: "must be an integer between 0 and 110",
       }
     }
     if (!expenses.match(currencyRegexp)) {
@@ -221,6 +242,16 @@ const NewPortfolioForm = (props) => {
                 onChange={handleFormChange}
               />
               <FormError error={errors.date} />
+            </label>
+            <label htmlFor="age">
+              Age:
+              <input
+                type="text"
+                value={formPayload.age}
+                name="age"
+                onChange={handleFormChange}
+              />
+              <FormError error={errors.age} />
             </label>
             <label htmlFor="salary">
               Salary:

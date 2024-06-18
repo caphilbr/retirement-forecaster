@@ -38,6 +38,11 @@ const PortfolioTile = (props) => {
     <table>
       <tbody>
         <tr>
+          <td>Age:</td>
+          <td>{portfolio.age}</td>
+          <td></td>
+        </tr>
+        <tr>
           <td>Salary:</td>
           <td>{formatCurrency(portfolio.salary, false)}</td>
           <td></td>

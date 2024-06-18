@@ -15,6 +15,22 @@ const StochConfigTile = (props) => {
     }
   }
 
+  const runConfig = async () => {
+    try {
+      const response = await fetch("/api/v1/scenario", {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ stochConfigId: stochConfig.id }),
+      })
+      const parsedData = await response.json()
+      console.log(parsedData)
+    } catch(error) {
+      console.log("error running configuration scenarios: ", error)
+    }
+  }
+
   const config = (
     <div>
       <p className="config-header">Configuration</p>
@@ -53,7 +69,7 @@ const StochConfigTile = (props) => {
           Show Scenarios
         </span>
       )}
-      <span className="button-run-config">
+      <span className="button-run-config" onClick={runConfig}>
           Run Configuration
       </span>
     </div>
