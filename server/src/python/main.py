@@ -1,8 +1,10 @@
 from configureDataframes import configureDataframes
+from convertScenariosToJson import convertScenariosToJson
 
-def run(stochConfig):
-  testCall = configureDataframes(stochConfig)
-  return testCall
+def run(scenarioInputs):
+  scenarios = configureDataframes(scenarioInputs)
+  jsonScenarios = convertScenariosToJson(scenarios)
+  return jsonScenarios
   # scenariosSetup = configureDataframes(stochConfig)
   # scenarios = runAllScenarios(stochConfig, scenariosSetup)
   # updatedStochConfig = stochConfig

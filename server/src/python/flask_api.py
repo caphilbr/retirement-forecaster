@@ -6,11 +6,10 @@ app = Flask(__name__)
 @app.route('/api/v1/scenario', methods=['POST'])
 def run_scenario():
   if request.is_json:
-    stochConfig = request.get_json()
-    results = main.run(stochConfig)
-    print(results, flush=True)
-    resultsJSON = jsonify(results)
-    return resultsJSON
+    scenarioInputs = request.get_json()
+    results = main.run(scenarioInputs)
+    # print(results, flush=True)
+    return results
   else:
     errorMessage = jsonify({ "error": "Invalid input, JSON expected" })
     return errorMessage, 400

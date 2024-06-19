@@ -41,6 +41,10 @@ const StochConfigTile = (props) => {
             <td className="narrow-config-col">{stochConfig.targetRetAge}</td>
           </tr>
           <tr>
+            <td className="wide-config-col">Number of Scenarios:</td>
+            <td className="narrow-config-col">{stochConfig.numberOfScens}</td>
+          </tr>
+          <tr>
             <td className="wide-config-col">Death Age:</td>
             <td className="narrow-config-col">{stochConfig.deathAge}</td>
           </tr>

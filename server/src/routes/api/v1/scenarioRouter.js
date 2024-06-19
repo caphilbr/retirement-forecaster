@@ -10,9 +10,9 @@ scenarioRouter.post("/", async (req, res) => {
       req.body.stochConfigId,
     )
     const portfolio = await stochConfig.$relatedQuery("portfolio")
-    stochConfig.age = portfolio.age
-    const response = await PythonClient.runScenario(stochConfig)
-    res.status(200).json({ message: response.message })
+    const scenarioInputs = { stochConfig, portfolio }
+    const scenarios = await PythonClient.runScenario(scenarioInputs)
+    res.status(200).json({ justTesting: "test" })
   } catch (error) {
     console.log(error)
     res.status(500).json({ error })

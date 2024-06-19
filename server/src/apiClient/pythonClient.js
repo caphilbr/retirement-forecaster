@@ -1,25 +1,29 @@
 import got from "got"
+import convertPythonScenarios from "../services/convertPythonScenarios.js"
 
 class PythonClient {
-  static async runScenario(stochConfig) {
+  static async runScenario(scenarioInputs) {
     try {
       const url = `http://127.0.0.1:5000/api/v1/scenario`
       const gotOptions = {
-        method: 'POST',
+        method: "POST",
         url: url,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        json: stochConfig
+        json: scenarioInputs,
       }
-      
-      const apiResponse = await got(gotOptions)
-      const responseBody = apiResponse.body
-      const parsedBody = JSON.parse(responseBody)
-      console.log('api client parsedBody', parsedBody)
-      return { message: parsedBody.message }
+
+      const response = await got(gotOptions)
+      const parsedData = JSON.parse(response.body)
+      const scenarios = await convertPythonScenarios(
+        parsedData,
+        scenarioInputs.stochConfig.id,
+      )
+      console.log('this is what I get back in the client api ', scenarios)
+      return { scenarios }
     } catch (error) {
-      console.log('error in the python client api: ', error)
+      console.log("error in the python client api: ", error)
       return { error: error.message }
     }
   }

@@ -12,7 +12,6 @@ portfolioConfigRouter.post("/", async (req, res) => {
     }
     const newConfig = await StochConfig.query().insertAndFetch(payload)
     const serializedConfig = StochConfigSerializer.postConfig(newConfig)
-    console.log("serializedConfig", serializedConfig)
     res.status(200).json({ config: serializedConfig })
   } catch(error) {
     console.log(error)

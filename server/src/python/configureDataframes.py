@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def configureDataframes(stochConfig):
+def configureDataframes(scenarioInputs):
     scenarios = {}
     columns = [
         "calYear",
@@ -36,10 +36,17 @@ def configureDataframes(stochConfig):
         "endYrBalHomeEq",
         "endYrBalTotal",
     ]
-    numberOfScenarios = stochConfig["numberOfScens"]
-    numberOfYears = stochConfig["deathAge"] - stochConfig["age"]
+    startYear = int(scenarioInputs["portfolio"]["date"][:4])
+    age = int(scenarioInputs["portfolio"]["age"])
+    numberOfScenarios = scenarioInputs["stochConfig"]["numberOfScens"]
+    numberOfYears = (
+        scenarioInputs["stochConfig"]["deathAge"] - scenarioInputs["portfolio"]["age"]
+    )
     for scenario in range(numberOfScenarios):
-      scenarioName = f'scenario{scenario}'
-      yearsData = np.nan * np.empty((numberOfYears, len(columns)))
-      scenarios[scenarioName] = pd.DataFrame(yearsData, columns=columns)
+        scenarioName = f"scenario{scenario}"
+        data = np.full((numberOfYears, len(columns)), 0)
+        df = pd.DataFrame(data, columns=columns)
+        df["calYear"] = np.arange(startYear, startYear + numberOfYears)
+        df["age"] = np.arange(age, age + numberOfYears)
+        scenarios[scenarioName] = df
     return scenarios
