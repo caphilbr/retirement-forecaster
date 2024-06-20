@@ -1,4 +1,5 @@
 import ProjectionYear from "../models/ProjectionYear.js"
+import StochConfig from "../models/StochConfig.js"
 import Scenario from "./../models/Scenario.js"
 
 const convertPythonScenarios = async (rawScenarios, stochConfigsId) => {
@@ -11,9 +12,6 @@ const convertPythonScenarios = async (rawScenarios, stochConfigsId) => {
 
   for (const scenario of Object.keys(scenariosInObject)) {
     const newScenario = await Scenario.query().insertAndFetch({
-      retAge: 65,
-      numYrsFrugal: 0,
-      balanceAtDeath: 0,
       stochConfigsId: stochConfigsId,
     })
     const arrayOfYearObjects = scenariosInObject[scenario]
@@ -21,10 +19,13 @@ const convertPythonScenarios = async (rawScenarios, stochConfigsId) => {
       yearObject.scenarioId = newScenario.id
     }
     await ProjectionYear.query().insertGraph(arrayOfYearObjects)
+    await newScenario.getScenarioResults()
+    await Scenario.query().findById(newScenario.id).patch(newScenario)
   }
-  // create new method to populate Scenario with results from the years
-  // call on the StochConfig method to get the summary results from the scenarios
-  return "tbd WIP"
+  const stochConfig = await StochConfig.query().findById(stochConfigsId)
+  await stochConfig.getStochResults()
+  await StochConfig.query().findById(stochConfigsId).patch(stochConfig)
+  return "tbd WIP" // right now there is nothing to return because it's just persisting to the database without a fetch
 }
 
 export default convertPythonScenarios

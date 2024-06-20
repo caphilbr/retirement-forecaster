@@ -50,33 +50,21 @@ class Seeder {
       portfolioId: 1,
     })
 
-    console.log("Generating dummy scenario results...")
+    console.log("Generating scenario objects...")
+    const scenarioIndices = []
     for (let scen = 1; scen <= 100; scen++) {
-      const retAge = Math.floor(58 + 5 * Math.random())
-      const balanceAtDeath = -500000 + 3000000 * Math.random()
-      let numYrsFrugal = 0
-      if (Math.random() > 0.8) {
-        numYrsFrugal += Math.floor(1 + 7 * Math.random())
-      }
       const stochConfigsId = 1
-      await Scenario.query().insert({
-        retAge,
-        balanceAtDeath,
-        numYrsFrugal,
-        stochConfigsId,
+      const newScenario = await Scenario.query().insertAndFetch({
+        stochConfigsId
       })
+      scenarioIndices.push(newScenario.id)
     }
-
-    console.log("Computing stochastic results...")
-    await stochConfig1.getStochResults()
-    await StochConfig.query().findById(stochConfig1.id).patch(stochConfig1)
 
     for (let scen = 1; scen <= 100; scen++) {
       console.log("Creating projection years for scenario # ", scen)
       let calYear = 2024
       let age = 45
       let isRetired = false
-      let isFrugal = false
       initBalReg = 455296
       initBalRoth = 23598
       initBalBank = 8654
@@ -130,7 +118,6 @@ class Seeder {
           calYear,
           age,
           isRetired,
-          isFrugal,
           initBalReg,
           initBalRoth,
           initBalBank,
@@ -164,7 +151,8 @@ class Seeder {
         // calculate next year's starting & known values
         calYear++
         age++
-        if (age >= 58) {
+        const retRandom = Math.floor(7 * Math.random())
+        if (age >= 58 + retRandom || isRetired) {
           isRetired = true
         }
         initBalReg = endYrBalReg
@@ -193,6 +181,18 @@ class Seeder {
       } while (age < 95)
     }
 
+    console.log('for configuration #1, populating the scenario results in the scenario object...')
+    for (const scenarioId of scenarioIndices) {
+      const currentScenario = await Scenario.query().findById(scenarioId)
+      await currentScenario.getScenarioResults()
+      await Scenario.query().findById(currentScenario.id).patch(currentScenario)
+    }
+
+    console.log("Computing stoch results...")
+    await stochConfig1.getStochResults()
+    await StochConfig.query().findById(stochConfig1.id).patch(stochConfig1)
+
+
     // *********************** //
     // Stoch Config #2 (no scenarios for this one)
 
@@ -211,15 +211,10 @@ class Seeder {
     for (let scen = 1; scen <= 100; scen++) {
       const retAge = Math.floor(65 + 2 * Math.random())
       const balanceAtDeath = -200000 + 3000000 * Math.random()
-      let numYrsFrugal = 0
-      if (Math.random() > 0.9) {
-        numYrsFrugal += Math.floor(1 + 3 * Math.random())
-      }
       const stochConfigsId = 2
       await Scenario.query().insert({
         retAge,
         balanceAtDeath,
-        numYrsFrugal,
         stochConfigsId,
       })
     }

@@ -1,4 +1,5 @@
 const Model = require("./Model.js")
+const scenarioResults = require("../services/scenarioResults.cjs")
 
 class Scenario extends Model {
   static get tableName() {
@@ -31,6 +32,17 @@ class Scenario extends Model {
         }
       }
     }
+  }
+
+  async getScenarioResults() {
+    const { ProjectionYear } = require("./index.js")
+    const projectionYears = await ProjectionYear.query().where({ scenarioId: this.id })
+    const {
+      retAge,
+      balanceAtDeath
+    } = scenarioResults(projectionYears)
+    this.retAge = retAge
+    this.balanceAtDeath = balanceAtDeath
   }
 }
 

@@ -40,17 +40,13 @@ class StochConfig extends Model {
     const {
       avgRetAge,
       avgBalAtDeath,
-      avgFrugalYrs,
       percRetAtTgt,
       percExhaust,
-      percFrugal,
     } = stochResults(scenarios, this.targetRetAge)
     this.avgRetAge = avgRetAge
     this.avgBalAtDeath = avgBalAtDeath
-    this.avgFrugalYrs = avgFrugalYrs
     this.percRetAtTgt = percRetAtTgt
     this.percExhaust = percExhaust
-    this.percFrugal = percFrugal
   }
 }
 

@@ -4,8 +4,7 @@ class ScenarioSerializer {
     const allowedFields = [
       "id",
       "retAge",
-      "balanceAtDeath",
-      "numYrsFrugal"
+      "balanceAtDeath"
     ]
     const serializedScenarios = scenarios.map(scenario => {
       const serializedScenario = {}

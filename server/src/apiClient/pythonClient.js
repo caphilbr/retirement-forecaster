@@ -20,7 +20,6 @@ class PythonClient {
         parsedData,
         scenarioInputs.stochConfig.id,
       )
-      console.log('this is what I get back in the client api ', scenarios)
       return { scenarios }
     } catch (error) {
       console.log("error in the python client api: ", error)

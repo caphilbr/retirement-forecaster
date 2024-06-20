@@ -22,10 +22,6 @@ const ScenarioTile = (props) => {
           <td className="wide-scen-col">Retirement Age:</td>
           <td className="narrow-scen-col">{props.scenario.retAge}</td>
         </tr>
-        <tr>
-          <td className="wide-scen-col">Frugal Years:</td>
-          <td className="narrow-scen-col">{props.scenario.numYrsFrugal}</td>
-        </tr>
       </tbody></table>
       {props.scenIdForProj == props.scenario.id ?
         <span onClick={handleShowProjection} className="button-show-projection-hide">Hide Projection</span>

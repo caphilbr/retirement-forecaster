@@ -25,7 +25,6 @@ const StochConfigTile = (props) => {
         body: JSON.stringify({ stochConfigId: stochConfig.id }),
       })
       const parsedData = await response.json()
-      console.log(parsedData)
     } catch(error) {
       console.log("error running configuration scenarios: ", error)
     }
@@ -101,12 +100,6 @@ const StochConfigTile = (props) => {
               </td>
             </tr>
             <tr>
-              <td className="wide-config-col">Average # of Frugal Years:</td>
-              <td className="narrow-config-col">
-                {stochConfig.avgFrugalYrs.toFixed(0)}
-              </td>
-            </tr>
-            <tr>
               <td className="wide-config-col">Chance of Ret at Tgt Age:</td>
               <td className="narrow-config-col">
                 {(stochConfig.percRetAtTgt * 100).toFixed(0)}%
@@ -116,12 +109,6 @@ const StochConfigTile = (props) => {
               <td className="wide-config-col">Chance of Fund Exhaustion:</td>
               <td className="narrow-config-col">
                 {(stochConfig.percExhaust * 100).toFixed(0)}%
-              </td>
-            </tr>
-            <tr>
-              <td className="wide-config-col">Chance of Living Frugal:</td>
-              <td className="narrow-config-col">
-                {(stochConfig.percFrugal * 100).toFixed(0)}%
               </td>
             </tr>
           </tbody>

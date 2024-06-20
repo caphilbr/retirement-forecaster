@@ -16,10 +16,8 @@ exports.up = async (knex) => {
     table.float("retSpendingDropPerc").notNullable().defaultTo(0.1)
     table.float("avgRetAge")
     table.float("avgBalAtDeath")
-    table.float("avgFrugalYrs")
     table.float("percRetAtTgt")
     table.float("percExhaust")
-    table.float("percFrugal")
     table
       .bigInteger("portfolioId")
       .unsigned()

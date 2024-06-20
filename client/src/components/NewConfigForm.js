@@ -143,10 +143,8 @@ const NewConfigForm = (props) => {
           ...formPayload,
           avgRetAge: null,
           avgBalAtDeath: null,
-          avgFrugalYrs: null,
           percRetAtTgt: null,
           percExhaust: null,
-          percFrugal: null,
           portfolioId: id,
         }
         const response = await fetch(`/api/v1/portfolio/${id}/stochConfig`, {
