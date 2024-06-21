@@ -1,5 +1,13 @@
 from services.configureDataframe import configureDataframe
-from services.netCfAndRebalance import netCfAndRebalance
+from services.withdrawAndRebalance import withdrawAndRebalance
+from services.calcTaxRate import calcTaxRate
+from services.getYields import getYields
+from services.rebalance import rebalance
+from services.applyYields import applyYields
+from services.getInflationRate import getInflationRate
+from services.canRetire import canRetire
+from services.raisePercent import raisePercent
+from services.calcSavings import calcSavings
 
 def produceScenario(scenarioInputs):
   scenarioResult = configureDataframe(scenarioInputs)
@@ -10,8 +18,12 @@ def produceScenario(scenarioInputs):
   deathAge = config["deathAge"]
   targetRetAge = config["targetRetAge"]
   retSpendingDropPerc = config["retSpendingDropPerc"]
+  savingsType = config["savingsType"]
+  savingsPerc = config["savingsPerc"]
 
   age = portfolio["age"]
+  mixReg = portfolio["mixReg"]
+  mixRoth = portfolio["mixRoth"]
   isRetired = False
 
   initBalReg = portfolio["balanceReg"]
@@ -23,21 +35,40 @@ def produceScenario(scenarioInputs):
   salary = portfolio["salary"]
   expenses = portfolio["expenses"]
   savings = portfolio["annualSavings"]
+  inflationRate = 0
+  raisePerc = 0
 
   while age < deathAge:
-    (
-      begYrBalReg,
-      begYrBalRoth,
-      begYrBalBank,
-      begYrBalHomeEq,
-      withdrawals,
-      taxRate,
-      taxes
-    ) = netCfAndRebalance(
-      initBalReg, initBalRoth, initBalBank, initBalHomeEq, savings - expenses
-    )
+    if not isRetired:
+      begYrBalReg = initBalReg
+      begYrBalRoth = initBalRoth
+      begYrBalBank = initBalBank + savings
+      begYrBalHomeEq = initBalHomeEq
+      mixReg, mixRoth = rebalance(
+        begYrBalReg,
+        begYrBalRoth,
+        begYrBalBank,
+        begYrBalHomeEq,
+        age
+      )
+      withdrawals = 0
+    else:
+      (
+        begYrBalReg,
+        begYrBalRoth,
+        begYrBalBank,
+        begYrBalHomeEq,
+        withdrawals,
+        taxRate,
+        taxes,
+        mixReg,
+        mixRoth
+      ) = withdrawAndRebalance(
+        initBalReg, initBalRoth, initBalBank, initBalHomeEq, expenses, age
+      )
+    begYrBalTotal = sum([begYrBalReg, begYrBalRoth, begYrBalBank, begYrBalHomeEq])
 
-    yieldReg, yieldRoth, yieldBank, yieldHomeEq = getYields()
+    yieldReg, yieldRoth, yieldBank, yieldHomeEq = getYields(mixReg, mixRoth, inflationRate)
 
     endYrBalReg, endYrBalRoth, endYrBalBank, endYrBalHomeEq = applyYields(
       begYrBalReg,
@@ -50,8 +81,65 @@ def produceScenario(scenarioInputs):
       yieldHomeEq,
     )
 
-    # persist all columns to the dataframe
-    # scenarioResult.loc[scenarioResult["age"] == age, "colName"] = xyz
+    endYrBalTotal = sum([endYrBalReg, endYrBalRoth, endYrBalBank, endYrBalHomeEq])
+
+    scenarioResult.loc[scenarioResult['age'] == age, [
+      "isRetired",
+      "initBalReg",
+      "initBalRoth",
+      "initBalBank",
+      "initBalHomeEq",
+      "initBalTotal",
+      "salary",
+      "withdrawals",
+      "taxRate",
+      "taxes",
+      "expenses",
+      "savings",
+      "begYrBalReg",
+      "begYrBalRoth",
+      "begYrBalBank",
+      "begYrBalHomeEq",
+      "begYrBalTotal",
+      "yieldReg",
+      "yieldRoth",
+      "yieldBank",
+      "yieldHomeEq",
+      "inflationRate",
+      "raisePerc",
+      "endYrBalReg",
+      "endYrBalRoth",
+      "endYrBalBank",
+      "endYrBalHomeEq",
+      "endYrBalTotal"]] = [
+      isRetired,
+      initBalReg,
+      initBalRoth,
+      initBalBank,
+      initBalHomeEq,
+      initBalTotal,
+      salary,
+      withdrawals,
+      taxRate,
+      taxes,
+      expenses,
+      savings,
+      begYrBalReg,
+      begYrBalRoth,
+      begYrBalBank,
+      begYrBalHomeEq,
+      begYrBalTotal,
+      yieldReg,
+      yieldRoth,
+      yieldBank,
+      yieldHomeEq,
+      inflationRate,
+      raisePerc,
+      endYrBalReg,
+      endYrBalRoth,
+      endYrBalBank,
+      endYrBalHomeEq,
+      endYrBalTotal]
 
     age += 1
     if age < deathAge:
@@ -61,13 +149,13 @@ def produceScenario(scenarioInputs):
       initBalHomeEq = endYrBalHomeEq
       initBalTotal = sum([initBalReg, initBalRoth, initBalBank, initBalHomeEq])
 
-      inflationRate = # get infl rate
+      inflationRate = getInflationRate()
       expenses *= (1 + inflationRate)
 
       if not isRetired:
         if (
           age >= 65
-          or (age >= targetRetAge and canRetire(age, endYrBalTotal))
+          or (age >= targetRetAge and canRetire(targetRetAge, age, endYrBalTotal, expenses))
         ):
           # retirement event, only happens once
           isRetired = True
@@ -75,11 +163,11 @@ def produceScenario(scenarioInputs):
           salary = 0
         else:
           # just another year goes by
-          raisePerc = # get raise Perc
+          raisePerc = raisePercent(inflationRate)
           salary *= (1 + raisePerc)
-          savings = # determine savings
-
-      # expenses (with drop if just retired), salary
+          taxRate = calcTaxRate(salary)
+          taxes = salary * taxRate
+          savings = calcSavings(savings, savingsType, savingsPerc, salary, taxes, expenses)
 
   return scenarioResult
 
