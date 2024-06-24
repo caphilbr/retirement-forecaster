@@ -16,7 +16,7 @@ def getYields(mixReg, mixRoth, inflationRate):
 
   yieldEquity = random.gauss(avgEquity, stdDevEquity)
   yieldFixedIncome = random.gauss(avgFixedIncome, stdDevFixedIncome)
-  yieldBank = random.gauss(avgBank, stdDevBank)
+  yieldBank = max(0,random.gauss(avgBank, stdDevBank))
   yieldHomeEq = random.gauss(avgHomeEq, stdDevHomeEq)
 
   yieldReg = mixReg["fixedIncome"] * yieldFixedIncome + mixReg["equity"] * yieldEquity

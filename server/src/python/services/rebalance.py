@@ -11,8 +11,16 @@ def rebalance(
   mixRoth = {"cash": cashMix}
   
   totalBalance = begYrBalReg + begYrBalRoth + begYrBalBank + begYrBalHomeEq
-  targetEquityBalance = (100 - age) / 100 * totalBalance
-  regRothEqMix = min(0.99, targetEquityBalance / (begYrBalReg + begYrBalRoth))
+  if totalBalance > 0:
+    targetEquityBalance = (100 - age) / 100 * totalBalance
+  else:
+    targetEquityBalance = 0
+    
+  if (begYrBalReg + begYrBalRoth) > 0:
+    regRothEqMix = min(0.99, targetEquityBalance / (begYrBalReg + begYrBalRoth))
+  else:
+    regRothEqMix = 0
+  
   regRothFixedIncomeMix = 1 - cashMix - regRothEqMix
 
   mixReg["equity"] = regRothEqMix
@@ -20,4 +28,14 @@ def rebalance(
   mixRoth["equity"] = regRothEqMix
   mixRoth["fixedIncome"] = regRothFixedIncomeMix
 
-  return mixReg, mixRoth
+  maxBankBalance = 300000
+  minBankBalance = 100000
+  transferToHomeEq = 0
+  if begYrBalBank < minBankBalance:
+    transferToHomeEq = begYrBalBank - minBankBalance
+  if begYrBalBank > maxBankBalance:
+    transferToHomeEq = begYrBalBank - maxBankBalance
+  begYrBalBank -= transferToHomeEq
+  begYrBalHomeEq += transferToHomeEq
+
+  return mixReg, mixRoth, begYrBalBank, begYrBalHomeEq

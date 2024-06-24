@@ -36,6 +36,23 @@ class Seeder {
       balanceHomeEq: initBalHomeEq,
     })
 
+    console.log("Seeding a simple portfolio for testing purposes...")
+    await Portfolio.query().insert({
+      name: "Portfolio for Code Testing",
+      date: new Date("2024-06-01"),
+      age: 60,
+      salary: 100000,
+      expenses: 40000,
+      annualSavings: 20000,
+      balanceReg: 500000,
+      mixReg: "1-24-75",
+      balanceRoth: 100000,
+      mixRoth: "2-48-50",
+      balanceBank: 50000,
+      balanceHomeEq: 1000000,
+    })
+
+
     // *********************** //
     // Stoch Config #1
 
@@ -222,6 +239,17 @@ class Seeder {
     console.log("Computing stochastic results...")
     await stochConfig2.getStochResults()
     await StochConfig.query().findById(stochConfig2.id).patch(stochConfig2)
+
+    console.log("Seeding stochastic configuration for simple portfolio...")
+    await StochConfig.query().insert({
+      numberOfScens: 2,
+      targetRetAge: 65,
+      deathAge: 70,
+      savingsType: "fixed",
+      savingsPerc: 0.05,
+      retSpendingDropPerc: 0.1,
+      portfolioId: 2,
+    })
 
     console.log("Done!")
     await connection.destroy()

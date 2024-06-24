@@ -35,16 +35,20 @@ def produceScenario(scenarioInputs):
   salary = portfolio["salary"]
   expenses = portfolio["expenses"]
   savings = portfolio["annualSavings"]
-  inflationRate = 0
-  raisePerc = 0
+  inflationRate = getInflationRate()
+  raisePerc = raisePercent(inflationRate)
+  taxRate = calcTaxRate(salary)
+  taxes = salary * taxRate
 
   while age < deathAge:
+    print('****************** at the start of the loop with age -> ', age, flush=True)
+    print('****************** isRetired -> ', isRetired, flush=True)
     if not isRetired:
       begYrBalReg = initBalReg
       begYrBalRoth = initBalRoth
       begYrBalBank = initBalBank + savings
       begYrBalHomeEq = initBalHomeEq
-      mixReg, mixRoth = rebalance(
+      mixReg, mixRoth, begYrBalBank, begYrBalHomeEq = rebalance(
         begYrBalReg,
         begYrBalRoth,
         begYrBalBank,
@@ -148,8 +152,7 @@ def produceScenario(scenarioInputs):
       initBalBank = endYrBalBank
       initBalHomeEq = endYrBalHomeEq
       initBalTotal = sum([initBalReg, initBalRoth, initBalBank, initBalHomeEq])
-
-      inflationRate = getInflationRate()
+      
       expenses *= (1 + inflationRate)
 
       if not isRetired:
@@ -161,13 +164,16 @@ def produceScenario(scenarioInputs):
           isRetired = True
           expenses *= (1 - retSpendingDropPerc)
           salary = 0
+          savings = 0
         else:
           # just another year goes by
-          raisePerc = raisePercent(inflationRate)
           salary *= (1 + raisePerc)
           taxRate = calcTaxRate(salary)
           taxes = salary * taxRate
           savings = calcSavings(savings, savingsType, savingsPerc, salary, taxes, expenses)
+
+      inflationRate = getInflationRate()
+      raisePerc = raisePercent(inflationRate)
 
   return scenarioResult
 
