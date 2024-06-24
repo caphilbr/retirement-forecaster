@@ -28,14 +28,11 @@ def rebalance(
   mixRoth["equity"] = regRothEqMix
   mixRoth["fixedIncome"] = regRothFixedIncomeMix
 
-  maxBankBalance = 300000
-  minBankBalance = 100000
+  maxBankBalance = 500000
   transferToHomeEq = 0
-  if begYrBalBank < minBankBalance:
-    transferToHomeEq = begYrBalBank - minBankBalance
   if begYrBalBank > maxBankBalance:
     transferToHomeEq = begYrBalBank - maxBankBalance
-  begYrBalBank -= transferToHomeEq
-  begYrBalHomeEq += transferToHomeEq
+  updatedBegYrBalBank = begYrBalBank - transferToHomeEq
+  updatedBegYrBalHomeEq = begYrBalHomeEq + transferToHomeEq
 
-  return mixReg, mixRoth, begYrBalBank, begYrBalHomeEq
+  return mixReg, mixRoth, updatedBegYrBalBank, updatedBegYrBalHomeEq

@@ -8,6 +8,5 @@ def run(scenarioInputs):
     scenarioName = f"scenario{scenarioNumber}"
     scenarioResult = produceScenario(scenarioInputs)
     scenarios[scenarioName] = scenarioResult
-  print("python scens before jsonifying", scenarios, flush=True)
   jsonScenarios = convertScenariosToJson(scenarios)
   return jsonScenarios
