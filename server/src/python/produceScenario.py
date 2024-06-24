@@ -41,8 +41,6 @@ def produceScenario(scenarioInputs):
   taxes = salary * taxRate
 
   while age < deathAge:
-    print('****************** at the start of the loop with age -> ', age, flush=True)
-    print('****************** isRetired -> ', isRetired, flush=True)
     if not isRetired:
       begYrBalReg = initBalReg
       begYrBalRoth = initBalRoth

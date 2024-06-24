@@ -1,5 +1,5 @@
 import got from "got"
-import convertPythonScenarios from "../services/convertPythonScenarios.js"
+import persistScenarios from "../services/persistScenarios.js"
 
 class PythonClient {
   static async runScenario(scenarioInputs) {
@@ -16,7 +16,7 @@ class PythonClient {
 
       const response = await got(gotOptions)
       const parsedData = JSON.parse(response.body)
-      const scenarios = await convertPythonScenarios(
+      const scenarios = await persistScenarios(
         parsedData,
         scenarioInputs.stochConfig.id,
       )

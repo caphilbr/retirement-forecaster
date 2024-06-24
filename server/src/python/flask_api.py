@@ -8,7 +8,6 @@ def run_scenario():
   if request.is_json:
     scenarioInputs = request.get_json()
     results = main.run(scenarioInputs)
-    # print(results, flush=True)
     return results
   else:
     errorMessage = jsonify({ "error": "Invalid input, JSON expected" })

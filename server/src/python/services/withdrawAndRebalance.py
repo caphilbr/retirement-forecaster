@@ -11,7 +11,8 @@ def withdrawAndRebalance(
   begYrBalHomeEq = initBalHomeEq
   remainingExpenses = expenses
 
-  bankWithdrawal = min(begYrBalBank, remainingExpenses)
+  minBankBalance = 100000
+  bankWithdrawal = min(begYrBalBank - minBankBalance, remainingExpenses)
   begYrBalBank -= bankWithdrawal
   remainingExpenses -= bankWithdrawal
 

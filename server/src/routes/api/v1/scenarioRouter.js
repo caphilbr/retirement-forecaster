@@ -12,7 +12,6 @@ scenarioRouter.post("/", async (req, res) => {
     const portfolio = await stochConfig.$relatedQuery("portfolio")
     const scenarioInputs = { stochConfig, portfolio }
     const scenarios = await PythonClient.runScenario(scenarioInputs)
-    console.log('in the express router... this is the scenarios we will send once they are ready -> ', scenarios)
     res.status(200).json({ justTesting: "test" })
   } catch (error) {
     console.log(error)
