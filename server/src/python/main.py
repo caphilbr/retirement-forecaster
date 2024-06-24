@@ -8,8 +8,6 @@ def run(scenarioInputs):
     scenarioName = f"scenario{scenarioNumber}"
     scenarioResult = produceScenario(scenarioInputs)
     scenarios[scenarioName] = scenarioResult
-    fileName = f"scenario{scenarioNumber}.csv"
-    scenarioResult.to_csv(fileName,index=False)
   print("python scens before jsonifying", scenarios, flush=True)
   jsonScenarios = convertScenariosToJson(scenarios)
   return jsonScenarios
