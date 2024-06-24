@@ -1,6 +1,6 @@
 
 class ScenarioSerializer {
-  static dashboardData = async (scenarios) => {
+  static dashboardData = (scenarios) => {
     const allowedFields = [
       "id",
       "retAge",

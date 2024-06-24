@@ -16,11 +16,11 @@ class PythonClient {
 
       const response = await got(gotOptions)
       const parsedData = JSON.parse(response.body)
-      const scenarios = await persistScenarios(
+      const updatedStochConfig = await persistScenarios(
         parsedData,
         scenarioInputs.stochConfig.id,
       )
-      return { scenarios }
+      return { stochConfig: updatedStochConfig.stochConfig }
     } catch (error) {
       console.log("error in the python client api: ", error)
       return { error: error.message }
