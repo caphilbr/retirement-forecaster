@@ -1,5 +1,6 @@
 import formatCurrency from "./formatCurrency.js"
 import formatPercent from "./formatPercent.js"
+import formatBoolean from "./formatBoolean.js"
 
 const formatProjection = (projection) => {
   const skip = ["id", "scenarioId"]
@@ -34,7 +35,7 @@ const formatProjection = (projection) => {
     "endYrBalHomeEq",
     "endYrBalTotal"
   ]
-  const boolean = ["isRetired", "isFrugal"]
+  const boolean = ["isRetired"]
 
   const formattedProjection = projection.map(year => {
     const formattedYear = {}
@@ -46,7 +47,7 @@ const formatProjection = (projection) => {
         formattedYear[key] = formatCurrency(year[key],false)
       }
       else if (boolean.includes(key)) {
-        formattedYear[key] = year[key]
+        formattedYear[key] = formatBoolean(year[key])
       }
       else if (skip.includes(key)) {
       } else {

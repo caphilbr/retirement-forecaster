@@ -8,9 +8,8 @@
 exports.up = async (knex) => {
   return knex.schema.createTable("scenarios", (table) => {
     table.bigIncrements("id")
-    table.integer("retAge").notNullable()
-    table.integer("numYrsFrugal").notNullable()
-    table.float("balanceAtDeath").notNullable()
+    table.integer("retAge")
+    table.float("balanceAtDeath")
     table
       .bigInteger("stochConfigsId")
       .unsigned()

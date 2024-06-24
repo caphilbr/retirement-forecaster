@@ -11,7 +11,6 @@ exports.up = async (knex) => {
     table.integer("calYear").notNullable()
     table.integer("age").notNullable()
     table.boolean("isRetired").notNullable().defaultTo(false)
-    table.boolean("isFrugal").notNullable().defaultTo(false)
 
     table.float("initBalReg").notNullable()
     table.float("initBalRoth").notNullable()

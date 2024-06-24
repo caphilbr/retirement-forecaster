@@ -15,6 +15,21 @@ const StochConfigTile = (props) => {
     }
   }
 
+  const runConfig = async () => {
+    try {
+      const response = await fetch("/api/v1/scenario", {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ stochConfigId: stochConfig.id }),
+      })
+      const parsedData = await response.json()
+    } catch(error) {
+      console.log("error running configuration scenarios: ", error)
+    }
+  }
+
   const config = (
     <div>
       <p className="config-header">Configuration</p>
@@ -23,6 +38,10 @@ const StochConfigTile = (props) => {
           <tr>
             <td className="wide-config-col">Target Retirement Age:</td>
             <td className="narrow-config-col">{stochConfig.targetRetAge}</td>
+          </tr>
+          <tr>
+            <td className="wide-config-col">Number of Scenarios:</td>
+            <td className="narrow-config-col">{stochConfig.numberOfScens}</td>
           </tr>
           <tr>
             <td className="wide-config-col">Death Age:</td>
@@ -53,7 +72,7 @@ const StochConfigTile = (props) => {
           Show Scenarios
         </span>
       )}
-      <span className="button-run-config">
+      <span className="button-run-config" onClick={runConfig}>
           Run Configuration
       </span>
     </div>
@@ -81,12 +100,6 @@ const StochConfigTile = (props) => {
               </td>
             </tr>
             <tr>
-              <td className="wide-config-col">Average # of Frugal Years:</td>
-              <td className="narrow-config-col">
-                {stochConfig.avgFrugalYrs.toFixed(0)}
-              </td>
-            </tr>
-            <tr>
               <td className="wide-config-col">Chance of Ret at Tgt Age:</td>
               <td className="narrow-config-col">
                 {(stochConfig.percRetAtTgt * 100).toFixed(0)}%
@@ -96,12 +109,6 @@ const StochConfigTile = (props) => {
               <td className="wide-config-col">Chance of Fund Exhaustion:</td>
               <td className="narrow-config-col">
                 {(stochConfig.percExhaust * 100).toFixed(0)}%
-              </td>
-            </tr>
-            <tr>
-              <td className="wide-config-col">Chance of Living Frugal:</td>
-              <td className="narrow-config-col">
-                {(stochConfig.percFrugal * 100).toFixed(0)}%
               </td>
             </tr>
           </tbody>

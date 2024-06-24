@@ -12,10 +12,8 @@ class StochConfigSerializer {
       "retSpendingDropPerc",
       "avgRetAge",
       "avgBalAtDeath",
-      "avgFrugalYrs",
       "percRetAtTgt",
       "percExhaust",
-      "percFrugal",
       "portfolioId"
     ]
     const stochConfigs = await portfolio.$relatedQuery("stochConfigs")
@@ -42,10 +40,8 @@ class StochConfigSerializer {
       "retSpendingDropPerc",
       "avgRetAge",
       "avgBalAtDeath",
-      "avgFrugalYrs",
       "percRetAtTgt",
       "percExhaust",
-      "percFrugal",
       "portfolioId"
     ]
     const serializedstochConfig = {}

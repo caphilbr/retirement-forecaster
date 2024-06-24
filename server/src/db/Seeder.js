@@ -18,11 +18,13 @@ class Seeder {
     let salary = 94500
     let expenses = 54750
     let savings = 10250
+    let age = 45
 
     console.log("Seeding a portfolio...")
     await Portfolio.query().insert({
       name: "Test Portfolio #1",
       date: new Date("2024-06-01"),
+      age: age,
       salary: salary,
       expenses: expenses,
       annualSavings: savings,
@@ -33,6 +35,23 @@ class Seeder {
       balanceBank: initBalBank,
       balanceHomeEq: initBalHomeEq,
     })
+
+    console.log("Seeding a simple portfolio for testing purposes...")
+    await Portfolio.query().insert({
+      name: "Portfolio for Code Testing",
+      date: new Date("2024-06-01"),
+      age: 60,
+      salary: 100000,
+      expenses: 40000,
+      annualSavings: 20000,
+      balanceReg: 500000,
+      mixReg: "1-24-75",
+      balanceRoth: 100000,
+      mixRoth: "2-48-50",
+      balanceBank: 50000,
+      balanceHomeEq: 1000000,
+    })
+
 
     // *********************** //
     // Stoch Config #1
@@ -48,33 +67,21 @@ class Seeder {
       portfolioId: 1,
     })
 
-    console.log("Generating dummy scenario results...")
+    console.log("Generating scenario objects...")
+    const scenarioIndices = []
     for (let scen = 1; scen <= 100; scen++) {
-      const retAge = Math.floor(58 + 5 * Math.random())
-      const balanceAtDeath = -500000 + 3000000 * Math.random()
-      let numYrsFrugal = 0
-      if (Math.random() > 0.8) {
-        numYrsFrugal += Math.floor(1 + 7 * Math.random())
-      }
       const stochConfigsId = 1
-      await Scenario.query().insert({
-        retAge,
-        balanceAtDeath,
-        numYrsFrugal,
-        stochConfigsId,
+      const newScenario = await Scenario.query().insertAndFetch({
+        stochConfigsId
       })
+      scenarioIndices.push(newScenario.id)
     }
-
-    console.log("Computing stochastic results...")
-    await stochConfig1.getStochResults()
-    await StochConfig.query().findById(stochConfig1.id).patch(stochConfig1)
 
     for (let scen = 1; scen <= 100; scen++) {
       console.log("Creating projection years for scenario # ", scen)
       let calYear = 2024
       let age = 45
       let isRetired = false
-      let isFrugal = false
       initBalReg = 455296
       initBalRoth = 23598
       initBalBank = 8654
@@ -128,7 +135,6 @@ class Seeder {
           calYear,
           age,
           isRetired,
-          isFrugal,
           initBalReg,
           initBalRoth,
           initBalBank,
@@ -162,7 +168,8 @@ class Seeder {
         // calculate next year's starting & known values
         calYear++
         age++
-        if (age >= 58) {
+        const retRandom = Math.floor(7 * Math.random())
+        if (age >= 58 + retRandom || isRetired) {
           isRetired = true
         }
         initBalReg = endYrBalReg
@@ -191,6 +198,18 @@ class Seeder {
       } while (age < 95)
     }
 
+    console.log('for configuration #1, populating the scenario results in the scenario object...')
+    for (const scenarioId of scenarioIndices) {
+      const currentScenario = await Scenario.query().findById(scenarioId)
+      await currentScenario.getScenarioResults()
+      await Scenario.query().findById(currentScenario.id).patch(currentScenario)
+    }
+
+    console.log("Computing stoch results...")
+    await stochConfig1.getStochResults()
+    await StochConfig.query().findById(stochConfig1.id).patch(stochConfig1)
+
+
     // *********************** //
     // Stoch Config #2 (no scenarios for this one)
 
@@ -209,15 +228,10 @@ class Seeder {
     for (let scen = 1; scen <= 100; scen++) {
       const retAge = Math.floor(65 + 2 * Math.random())
       const balanceAtDeath = -200000 + 3000000 * Math.random()
-      let numYrsFrugal = 0
-      if (Math.random() > 0.9) {
-        numYrsFrugal += Math.floor(1 + 3 * Math.random())
-      }
       const stochConfigsId = 2
       await Scenario.query().insert({
         retAge,
         balanceAtDeath,
-        numYrsFrugal,
         stochConfigsId,
       })
     }
@@ -225,6 +239,17 @@ class Seeder {
     console.log("Computing stochastic results...")
     await stochConfig2.getStochResults()
     await StochConfig.query().findById(stochConfig2.id).patch(stochConfig2)
+
+    console.log("Seeding stochastic configuration for simple portfolio...")
+    await StochConfig.query().insert({
+      numberOfScens: 2,
+      targetRetAge: 65,
+      deathAge: 70,
+      savingsType: "fixed",
+      savingsPerc: 0.05,
+      retSpendingDropPerc: 0.1,
+      portfolioId: 2,
+    })
 
     console.log("Done!")
     await connection.destroy()
