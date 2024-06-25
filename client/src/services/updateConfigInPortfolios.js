@@ -1,12 +1,18 @@
 const updateConfigInPortfolios = (stochConfig, portfolios) => {
-  const updatedPortfolios = portfolios
-  updatedPortfolios.forEach((portfolio, portfolioIndex) => {
+  const updatedPortfolios = portfolios.map((portfolio) => {
     if (portfolio.id == stochConfig.portfolioId) {
-      portfolio.stochConfigs.forEach((config, configIndex) => {
-        if (config.id == stochConfig.id) {
-          updatedPortfolios[portfolioIndex].stochConfigs[configIndex] = stochConfig
-        }
-      })
+      return {
+        ...portfolio,
+        stochConfigs: portfolio.stochConfigs.map((config) => {
+          if (config.id == stochConfig.id) {
+            return stochConfig
+          } else {
+            return config
+          }
+        }),
+      }
+    } else {
+      return portfolio
     }
   })
   return updatedPortfolios
