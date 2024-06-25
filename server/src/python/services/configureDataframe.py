@@ -1,51 +1,16 @@
 import pandas as pd
 import numpy as np
+from services.columns import columns
 
 def configureDataframe(scenarioInputs):
-    # scenarios = {}
-    columns = [
-        "calYear",
-        "age",
-        "isRetired",
-        "initBalReg",
-        "initBalRoth",
-        "initBalBank",
-        "initBalHomeEq",
-        "initBalTotal",
-        "salary",
-        "withdrawals",
-        "taxRate",
-        "taxes",
-        "expenses",
-        "savings",
-        "begYrBalReg",
-        "begYrBalRoth",
-        "begYrBalBank",
-        "begYrBalHomeEq",
-        "begYrBalTotal",
-        "yieldReg",
-        "yieldRoth",
-        "yieldBank",
-        "yieldHomeEq",
-        "inflationRate",
-        "raisePerc",
-        "endYrBalReg",
-        "endYrBalRoth",
-        "endYrBalBank",
-        "endYrBalHomeEq",
-        "endYrBalTotal",
-    ]
+    allColumns = ["calYear", "age"] + columns
     startYear = int(scenarioInputs["portfolio"]["date"][:4])
     age = int(scenarioInputs["portfolio"]["age"])
-    # numberOfScenarios = scenarioInputs["stochConfig"]["numberOfScens"]
     numberOfYears = (
         scenarioInputs["stochConfig"]["deathAge"] - scenarioInputs["portfolio"]["age"]
     )
-    # for scenario in range(numberOfScenarios):
-        # scenarioName = f"scenario{scenario}"
-    data = np.full((numberOfYears, len(columns)), 0)
-    emptyScenarioDf = pd.DataFrame(data, columns=columns)
+    data = np.full((numberOfYears, len(allColumns)), 0)
+    emptyScenarioDf = pd.DataFrame(data, columns=allColumns)
     emptyScenarioDf["calYear"] = np.arange(startYear, startYear + numberOfYears)
     emptyScenarioDf["age"] = np.arange(age, age + numberOfYears)
-        # scenarios[scenarioName] = df
     return emptyScenarioDf
