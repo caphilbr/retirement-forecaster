@@ -51,10 +51,10 @@ const NewConfigForm = (props) => {
       }
     }
     const numScenariosInt = parseInt(numberOfScens)
-    if (numScenariosInt < 1 || numScenariosInt > 1000) {
+    if (numScenariosInt < 1 || numScenariosInt > 200) {
       newErrors = {
         ...newErrors,
-        numberOfScens: "must be an integer between 1 and 1,000",
+        numberOfScens: "must be an integer between 1 and 200 (results converge at around 100 scenarios)",
       }
     }
     if (!targetRetAge.match(integerRegex)) {

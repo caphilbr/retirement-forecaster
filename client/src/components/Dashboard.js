@@ -29,7 +29,6 @@ const Dashboard = () => {
 
   const resetStochConfig = (stochConfig) => {
     const updatedPortfolios = updateConfigInPortfolios(stochConfig, portfolios)
-    console.log("about to update state with this...", updatedPortfolios)
     setPortfolios(updatedPortfolios)
   }
 
