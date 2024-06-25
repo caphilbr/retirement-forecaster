@@ -137,7 +137,7 @@ const Dashboard = () => {
             <div className="cell small-2 horiz-overflow-container">
               {scenarioTiles}
             </div>
-            <h5 className="add-portfolio-button">
+            <h5 className="sort-filter-button">
               <FontAwesomeIcon icon="fas fa-sliders-h" /> Sort/Filter Scenarios
             </h5>
           </div>
