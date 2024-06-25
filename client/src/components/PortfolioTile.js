@@ -17,6 +17,8 @@ const PortfolioTile = (props) => {
         configIdForScens={props.configIdForScens}
         setConfigIdForScens={props.setConfigIdForScens}
         stochConfig={stochConfig}
+        populateProjection={props.populateProjection}
+        resetStochConfig={props.resetStochConfig}
         key={stochConfig.id}
       />
     )

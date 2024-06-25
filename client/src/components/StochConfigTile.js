@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import formatCurrency from "../utilities/formatCurrency"
 
 const StochConfigTile = (props) => {
@@ -25,6 +25,8 @@ const StochConfigTile = (props) => {
         body: JSON.stringify({ stochConfigId: stochConfig.id }),
       })
       const parsedData = await response.json()
+      props.populateProjection(null)
+      props.resetStochConfig(parsedData.stochConfig)
     } catch(error) {
       console.log("error running configuration scenarios: ", error)
     }

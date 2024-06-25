@@ -23,7 +23,7 @@ class StochConfigSerializer {
         serializedstochConfig[field] = stochConfig[field]
       })
       const relatedScenarios = await stochConfig.$relatedQuery("scenarios")
-      serializedstochConfig["scenarios"] = await ScenarioSerializer.dashboardData(relatedScenarios)
+      serializedstochConfig["scenarios"] = ScenarioSerializer.dashboardData(relatedScenarios)
       return serializedstochConfig
     }))
     return serializedstochConfigs
@@ -50,6 +50,12 @@ class StochConfigSerializer {
     })
     serializedstochConfig["scenarios"] = []
     return serializedstochConfig    
+  }
+
+  static reRunConfig = (stochConfig, scenarios) => {
+    const updatedConfig = StochConfigSerializer.postConfig(stochConfig)
+    updatedConfig.scenarios = ScenarioSerializer.dashboardData(scenarios)
+    return updatedConfig
   }
 }
 

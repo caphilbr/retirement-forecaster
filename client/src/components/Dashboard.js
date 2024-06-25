@@ -5,6 +5,7 @@ import Projection from "./Projection.js"
 import NewPortfolioForm from "./NewPortfolioForm.js"
 import NewConfigForm from "./NewConfigForm.js"
 import getScenariosFromPortfolios from "../services/getScenariosFromPortfolios.js"
+import updateConfigInPortfolios from "../services/updateConfigInPortfolios.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Dashboard = () => {
@@ -24,6 +25,12 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const resetStochConfig = (stochConfig) => {
+    const updatedPortfolios = updateConfigInPortfolios(stochConfig, portfolios)
+    console.log("about to update state with this...", updatedPortfolios)
+    setPortfolios(updatedPortfolios)
   }
 
   const getProjection = async (scenarioId) => {
@@ -57,8 +64,6 @@ const Dashboard = () => {
     setShowNewConfig(!showNewConfig)
   }
 
-
-
   const portfolioTiles = portfolios.map((portfolio) => {
     return (
       <PortfolioTile
@@ -68,6 +73,8 @@ const Dashboard = () => {
         setSelectedPortfolioId={setSelectedPortfolioId}
         key={portfolio.id}
         toggleNewConfig={toggleNewConfig}
+        populateProjection={populateProjection}
+        resetStochConfig={resetStochConfig}
       />
     )
   })
