@@ -1,9 +1,15 @@
 # Retirement Forecaster
 
-## Summary
+A web app to determine the sufficiency of your retirement savings. You create a 'Portfolio' which contains your starting balances, age, spending level, etc. You then create a 'Configuration', which tells the app how you want to forecast your savings (e.g., how to determine your annual savings in the future, your target retirement age, how much expenses will drop in retirement, how many scenarios you want to run, etc.). One might imagine running a few different Configurations to see how results are impacted with different inputs.
 
-This web app allows a User to input their current retirement savings balances by account type (401k, Roth, Bank Acct, etc.) as well as their current annual savings, and see how well they are on track for retirement.
+The app then runs the specified number of projection scenarios. The key result is 'Chance of Fund Exhaustion', which indicates how likely you are to run out of funds before dying! For those interested in the granular results, each scenario can be displayed, along with the year-by-year financial projection.
 
-The app uses stochastic scenarios with variable yields on accounts, inflation, and salary raises.
+Other notable features include:
 
-## To be further updated...
+- auto-rebalancing based on age
+- dynamic retirement age, pushing off retirement if funds are not sufficient
+- asset yields, inflation and salary raises are each dynamically generated each year, based on a mean and standard deviation
+- taxes are determined dynamically, using tax brackets and taking into consideration which type of retirement account withdrawals are from
+- a choice of savings approach (fixed dollar, % of salary, or salary less expenses & taxes)
+
+The calculation engine was built in Python, with results exposed via a Flask api. The user app was built with React, Express, and PostgreSQL (with Knex & Objection).
