@@ -3,9 +3,12 @@ import PortfolioTile from "./PortfolioTile"
 import ScenarioTile from "./ScenarioTile.js"
 import Projection from "./Projection.js"
 import NewPortfolioForm from "./NewPortfolioForm.js"
+import SortDropdown from "./SortDropdown.js"
 import NewConfigForm from "./NewConfigForm.js"
 import getScenariosFromPortfolios from "../services/getScenariosFromPortfolios.js"
 import updateConfigInPortfolios from "../services/updateConfigInPortfolios.js"
+import replaceScenarios from "../services/replaceScenarios.js"
+import sortScenarios from "../utilities/sortScenarios.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Dashboard = () => {
@@ -16,6 +19,7 @@ const Dashboard = () => {
   const [showNewPorfolio, setShowNewPortfolio] = useState(false)
   const [showNewConfig, setShowNewConfig] = useState(false)
   const [selectedPortfolioId, setSelectedPortfolioId] = useState(null)
+  const [showSort, setShowSort] = useState(false)
 
   const getPortfolios = async () => {
     try {
@@ -25,6 +29,13 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const sort = (sortType) => {
+    const scenarios = getScenariosFromPortfolios(portfolios, configIdForScens)
+    const sortedScenarios = sortScenarios(scenarios, sortType)
+    setPortfolios(replaceScenarios(sortedScenarios, portfolios, configIdForScens))
+    setShowSort(false)
   }
 
   const resetStochConfig = (stochConfig) => {
@@ -57,7 +68,11 @@ const Dashboard = () => {
 
   const toggleNewPortfolio = () => {
     setShowNewPortfolio(!showNewPorfolio)
-    }
+  }
+
+  const toggleSort = () => {
+    setShowSort(!showSort)
+  }
     
   const toggleNewConfig = () => {
     setShowNewConfig(!showNewConfig)
@@ -137,9 +152,10 @@ const Dashboard = () => {
             <div className="cell small-2 horiz-overflow-container">
               {scenarioTiles}
             </div>
-            <h5 className="sort-filter-button">
-              <FontAwesomeIcon icon="fas fa-sliders-h" /> Sort/Filter Scenarios
+            <h5 className="sort-button" onClick={toggleSort}>
+              <FontAwesomeIcon icon="fas fa-sliders-h" /> Sort Scenarios
             </h5>
+            {showSort ? <SortDropdown sort={sort} /> : null}
           </div>
           <div className="cell small-12 dashboard-container">
             <h3>

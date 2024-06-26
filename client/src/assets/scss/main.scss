@@ -70,16 +70,22 @@ body {
   font-size: 140%;
 }
 
-.sort-filter-button {
+.sort-button {
   margin-left: 2rem;
   cursor: pointer;
-  color: lightgray;
 }
 
-// .sort-filter-button:hover {
-  // font-weight: bold;
-  // font-size: 140%;
-// }
+.sort-button:hover {
+  font-weight: bold;
+}
+
+.sort-option {
+  cursor: pointer;
+}
+
+.sort-option:hover {
+  font-weight: bold;
+}
 
 .add-config-button {
   margin-top: 1rem;
@@ -92,6 +98,16 @@ body {
   font-size: 110%;
 }
 
+.dropdown-box {
+  border-radius: 0.25rem;
+  padding: 3px;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 0.5rem;
+  margin-left: 2rem;
+  width: 20rem;
+}
 
 .portfolio-tile {
   display: inline-block;
