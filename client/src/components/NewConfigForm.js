@@ -10,18 +10,25 @@ const NewConfigForm = (props) => {
     targetRetAge: "65",
     deathAge: "95",
     savingsType: "fixed",
-    savingsPerc: "n/a",
-    retSpendingDropPerc: "0.10",
+    savingsPerc: 0.05,
+    retSpendingDropPerc: 0.1,
   })
-
+  console.log(formPayload)
   const toggleNewConfig = () => {
     props.toggleNewConfig()
   }
 
   const handleFormChange = (event) => {
+    let value = event.currentTarget.value
+    if (
+      event.currentTarget.name == "savingsPerc" ||
+      event.currentTarget.name == "retSpendingDropPerc"
+    ) {
+      value /= 100
+    }
     setFormPayload({
       ...formPayload,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [event.currentTarget.name]: value,
     })
   }
 
@@ -35,7 +42,6 @@ const NewConfigForm = (props) => {
       savingsPerc,
       retSpendingDropPerc,
     } = payload
-    const percentRegex = config.validation.percent.regexp.percentRegex
     const integerRegex = config.validation.integer.regexp.integerRegex
     let newErrors = {}
     if (!numberOfScens.match(integerRegex)) {
@@ -54,7 +60,8 @@ const NewConfigForm = (props) => {
     if (numScenariosInt < 1 || numScenariosInt > 200) {
       newErrors = {
         ...newErrors,
-        numberOfScens: "must be an integer between 1 and 200 (results converge at around 100 scenarios)",
+        numberOfScens:
+          "must be an integer between 1 and 200 (results converge at around 100 scenarios)",
       }
     }
     if (!targetRetAge.match(integerRegex)) {
@@ -88,35 +95,11 @@ const NewConfigForm = (props) => {
         deathAge: "cannot be greater than 110",
       }
     }
-    if (!savingsPerc.match(percentRegex) && savingsPerc != "n/a") {
-      newErrors = {
-        ...newErrors,
-        savingsPerc: "must be a number between 0 and 1 (no more than 3 decimals), or 'n/a'",
-      }
-    }
-    if (savingsPerc.trim() == "") {
-      newErrors = {
-        ...newErrors,
-        savingsPerc: "amount cannot be blank",
-      }
-    }
     const savingsPercNum = parseFloat(savingsPerc)
     if (savingsPercNum < 0 || savingsPercNum > 1) {
       newErrors = {
         ...newErrors,
         savingsPerc: "must be a number between 0 and 1, or 'n/a'",
-      }
-    }
-    if (!retSpendingDropPerc.match(percentRegex)) {
-      newErrors = {
-        ...newErrors,
-        retSpendingDropPerc: "must be a number between 0 and 1, no more than 3 decimals",
-      }
-    }
-    if (retSpendingDropPerc.trim() == "") {
-      newErrors = {
-        ...newErrors,
-        retSpendingDropPerc: "amount cannot be blank",
       }
     }
     const retSpendingDropPercNum = parseFloat(retSpendingDropPerc)
@@ -161,7 +144,8 @@ const NewConfigForm = (props) => {
         } else {
           const parsedData = await response.json()
           const updatedPortfolios = addConfigToPortfolios(
-            parsedData.config, props.portfolios
+            parsedData.config,
+            props.portfolios,
           )
           props.setPortfolios(updatedPortfolios)
           props.toggleNewConfig()
@@ -170,6 +154,26 @@ const NewConfigForm = (props) => {
         console.log("error in posting new portfolio: ", error)
       }
     }
+  }
+
+  let selectSavingsPercent = null
+  if (formPayload.savingsType == "percent") {
+    selectSavingsPercent = (
+      <label htmlFor="savingsPerc">
+        Savings % (of Gross Salary):
+        <input
+          className="percent-form"
+          type="number"
+          value={Math.floor(100 * formPayload.savingsPerc)}
+          name="savingsPerc"
+          onChange={handleFormChange}
+          min="0"
+          max="100"
+        />
+        %
+        <FormError error={errors.savingsPerc} />
+      </label>
+    )
   }
 
   return (
@@ -212,32 +216,32 @@ const NewConfigForm = (props) => {
             </label>
             <label htmlFor="savingsType">
               Savings Approach:
-              <input
-                type="text"
-                value={formPayload.savingsType}
+              <select
+                id="savingsType"
                 name="savingsType"
+                value={formPayload.savingsType}
                 onChange={handleFormChange}
-              />
+                className="savings-form"
+              >
+                <option value="fixed">Fixed</option>
+                <option value="percent">% of Salary</option>
+                <option value="remainder">Salary less taxes & expenses</option>
+              </select>
               <FormError error={errors.savingsType} />
             </label>
-            <label htmlFor="savingsPerc">
-              Savings % (of Salary):
-              <input
-                type="text"
-                value={formPayload.savingsPerc}
-                name="savingsPerc"
-                onChange={handleFormChange}
-              />
-              <FormError error={errors.savingsPerc} />
-            </label>
+            {selectSavingsPercent}
             <label htmlFor="retSpendingDropPerc">
               % Expense Drop at Retirement:
               <input
-                type="text"
-                value={formPayload.retSpendingDropPerc}
+                className="percent-form"
+                type="number"
+                value={Math.floor(100 * formPayload.retSpendingDropPerc)}
                 name="retSpendingDropPerc"
                 onChange={handleFormChange}
+                min="0"
+                max="100"
               />
+              %
               <FormError error={errors.retSpendingDropPerc} />
             </label>
           </div>
