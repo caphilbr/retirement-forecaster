@@ -27,9 +27,21 @@ const StochConfigTile = (props) => {
       const parsedData = await response.json()
       props.populateProjection(null)
       props.resetStochConfig(parsedData.stochConfig)
-    } catch(error) {
+    } catch (error) {
       console.log("error running configuration scenarios: ", error)
     }
+  }
+
+  let savingsPercent = null
+  if (stochConfig.savingsType == "percent") {
+    savingsPercent = (
+      <tr>
+        <td className="wide-config-col">Savings %:</td>
+        <td className="narrow-config-col">
+          {(stochConfig.savingsPerc * 100).toFixed(0)}%
+        </td>
+      </tr>
+    )
   }
 
   const config = (
@@ -53,6 +65,7 @@ const StochConfigTile = (props) => {
             <td className="wide-config-col">Savings Type:</td>
             <td className="narrow-config-col">{stochConfig.savingsType}</td>
           </tr>
+          {savingsPercent}
           <tr>
             <td className="wide-config-col">Expense Drop @ Retirement:</td>
             <td className="narrow-config-col">
@@ -75,7 +88,7 @@ const StochConfigTile = (props) => {
         </span>
       )}
       <span className="button-run-config" onClick={runConfig}>
-          Run Configuration
+        Run Configuration
       </span>
     </div>
   )
