@@ -22,7 +22,7 @@ class Seeder {
 
     console.log("Seeding a portfolio...")
     await Portfolio.query().insert({
-      name: "Test Portfolio #1",
+      name: "June 1, 2024 balances",
       date: new Date("2024-06-01"),
       age: age,
       salary: salary,
@@ -38,8 +38,8 @@ class Seeder {
 
     console.log("Seeding a simple portfolio for testing purposes...")
     await Portfolio.query().insert({
-      name: "Portfolio for Code Testing",
-      date: new Date("2024-06-01"),
+      name: "Year-end 2023",
+      date: new Date("2023-12-31"),
       age: 60,
       salary: 100000,
       expenses: 40000,
