@@ -57,7 +57,7 @@ def produceScenario(scenarioInputs):
                 if age >= 65 or (
                     age >= targetRetAge
                     and canRetire(
-                        targetRetAge, age, balances.getValue("endYrBalTotal"), expenses
+                        targetRetAge, age, balances.getValue("endYrBalTotal"), expenses, deathAge
                     )
                 ):
                     # retirement event, only happens once
