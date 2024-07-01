@@ -1,7 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import formatCurrency from "../utilities/formatCurrency"
+import { RotateLoader } from "react-spinners"
 
 const StochConfigTile = (props) => {
+  const [loading, setLoading] = useState(false)
   const stochConfig = props.stochConfig
 
   const handleShowScenarios = () => {
@@ -17,6 +19,7 @@ const StochConfigTile = (props) => {
 
   const runConfig = async () => {
     try {
+      setLoading(true)
       const response = await fetch("/api/v1/scenario", {
         method: "POST",
         headers: new Headers({
@@ -27,8 +30,10 @@ const StochConfigTile = (props) => {
       const parsedData = await response.json()
       props.populateProjection(null)
       props.resetStochConfig(parsedData.stochConfig)
+      setLoading(false)
     } catch (error) {
       console.log("error running configuration scenarios: ", error)
+      setLoading(false)
     }
   }
 
@@ -87,9 +92,11 @@ const StochConfigTile = (props) => {
           Show Scenarios
         </span>
       )}
-      <span className="button-run-config" onClick={runConfig}>
-        Run Configuration
-      </span>
+      {loading ? null : (
+        <span className="button-run-config" onClick={runConfig}>
+          Run Configuration
+        </span>
+      )}
     </div>
   )
 
@@ -136,6 +143,11 @@ const StochConfigTile = (props) => {
     <div className="grid-x config-summary-tile">
       <div className="cell small-6">{config}</div>
       <div className="cell small-6">{results}</div>
+      {loading ? (
+        <div className="spinner cell small-12">
+          <RotateLoader loading={loading} size="1rem" color="#007E00" />
+        </div>
+      ) : null}
     </div>
   )
 }
