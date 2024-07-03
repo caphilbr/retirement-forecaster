@@ -25,11 +25,13 @@ def produceScenario(scenarioInputs):
     isRetired = False
     salary = portfolio["salary"]
     expenses = portfolio["expenses"]
-    savings = portfolio["annualSavings"]
     inflationRate = getInflationRate()
     raisePerc = raisePercent(inflationRate)
     taxRate = calcTaxRate(salary)
     taxes = salary * taxRate
+    savings = calcSavings(
+        config["annualSavings"], savingsType, savingsPerc, salary, taxes, expenses
+    )
 
     while age < deathAge:
         if not isRetired:
@@ -57,7 +59,11 @@ def produceScenario(scenarioInputs):
                 if age >= 65 or (
                     age >= targetRetAge
                     and canRetire(
-                        targetRetAge, age, balances.getValue("endYrBalTotal"), expenses, deathAge
+                        targetRetAge,
+                        age,
+                        balances.getValue("endYrBalTotal"),
+                        expenses,
+                        deathAge,
                     )
                 ):
                     # retirement event, only happens once

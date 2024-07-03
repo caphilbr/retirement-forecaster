@@ -11,6 +11,7 @@ const NewConfigForm = (props) => {
     deathAge: "95",
     savingsType: "fixed",
     savingsPerc: 0.05,
+    annualSavings: "10000",
     retSpendingDropPerc: 0.1,
   })
   console.log(formPayload)
@@ -38,12 +39,25 @@ const NewConfigForm = (props) => {
       numberOfScens,
       targetRetAge,
       deathAge,
-      savingsType,
+      annualSavings,
       savingsPerc,
       retSpendingDropPerc,
     } = payload
+    const currencyRegexp = config.validation.currency.regexp.currencyRegex
     const integerRegex = config.validation.integer.regexp.integerRegex
     let newErrors = {}
+    if (!annualSavings.match(currencyRegexp)) {
+      newErrors = {
+        ...newErrors,
+        annualSavings: "must be a number (no more than 2 decimals)",
+      }
+    }
+    if (annualSavings.trim() == "") {
+      newErrors = {
+        ...newErrors,
+        annualSavings: "amount cannot be blank",
+      }
+    }
     if (!numberOfScens.match(integerRegex)) {
       newErrors = {
         ...newErrors,
@@ -175,7 +189,21 @@ const NewConfigForm = (props) => {
       </label>
     )
   }
-
+  let selectSavingsAmount = null
+  if (formPayload.savingsType == "fixed") {
+    selectSavingsAmount = (
+      <label htmlFor="annualSavings">
+        Annual Savings Amount:
+        <input
+          type="text"
+          value={formPayload.annualSavings}
+          name="annualSavings"
+          onChange={handleFormChange}
+        />
+        <FormError error={errors.annualSavings} />
+      </label>
+    )
+  }
   return (
     <div className="gray-background">
       <div className="new-portfolio-form">
@@ -230,6 +258,7 @@ const NewConfigForm = (props) => {
               <FormError error={errors.savingsType} />
             </label>
             {selectSavingsPercent}
+            {selectSavingsAmount}
             <label htmlFor="retSpendingDropPerc">
               % Expense Drop at Retirement:
               <input
