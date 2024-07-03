@@ -1,3 +1,7 @@
+import warnings
+
+warnings.filterwarnings("ignore", category=FutureWarning)
+
 class ScenarioYear:
     def __init__(self, scenarioResultDf, age):
         self.df = scenarioResultDf
