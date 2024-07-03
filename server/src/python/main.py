@@ -6,6 +6,7 @@ def run(scenarioInputs):
   numberOfScenarios = scenarioInputs["stochConfig"]["numberOfScens"]
   for scenarioNumber in range(numberOfScenarios):
     scenarioName = f"scenario{scenarioNumber}"
+    print("Running projection ", scenarioName, flush=True)
     scenarioResult = produceScenario(scenarioInputs)
     scenarios[scenarioName] = scenarioResult
   jsonScenarios = convertScenariosToJson(scenarios)

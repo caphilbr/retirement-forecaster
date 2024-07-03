@@ -14,7 +14,6 @@ const NewConfigForm = (props) => {
     annualSavings: "10000",
     retSpendingDropPerc: 0.1,
   })
-  console.log(formPayload)
   const toggleNewConfig = () => {
     props.toggleNewConfig()
   }
