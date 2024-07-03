@@ -13,7 +13,6 @@ exports.up = async (knex) => {
     table.integer("age").notNullable()
     table.float("salary").notNullable().defaultTo(0.0)
     table.float("expenses").notNullable()
-    table.float("annualSavings").notNullable().defaultTo(0.0)
     table.float("balanceReg").notNullable().defaultTo(0.0)
     table.string("mixReg").notNullable().defaultTo("0-40-60")
     table.float("balanceRoth").notNullable().defaultTo(0.0)

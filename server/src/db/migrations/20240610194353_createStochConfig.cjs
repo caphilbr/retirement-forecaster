@@ -8,11 +8,12 @@
 exports.up = async (knex) => {
   return knex.schema.createTable("stochConfigs", (table) => {
     table.bigIncrements("id")
-    table.integer("numberOfScens").notNullable().defaultTo(1000)
+    table.integer("numberOfScens").notNullable().defaultTo(100)
     table.integer("targetRetAge").notNullable().defaultTo(65)
     table.integer("deathAge").notNullable().defaultTo(95)
     table.string("savingsType").notNullable().defaultTo("fixed")
     table.float("savingsPerc").notNullable().defaultTo(0.05)
+    table.float("annualSavings").notNullable().defaultTo(0)
     table.float("retSpendingDropPerc").notNullable().defaultTo(0.1)
     table.float("avgRetAge")
     table.float("avgBalAtDeath")

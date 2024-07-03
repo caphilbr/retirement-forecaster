@@ -12,7 +12,6 @@ const NewPortfolioForm = (props) => {
     age: "0",
     salary: "0",
     expenses: "0",
-    annualSavings: "0",
     balanceReg: "0",
     mixReg: "1-29-70",
     balanceRoth: "0",
@@ -47,7 +46,6 @@ const NewPortfolioForm = (props) => {
       age,
       salary,
       expenses,
-      annualSavings,
       balanceReg,
       mixReg,
       balanceRoth,
@@ -105,18 +103,6 @@ const NewPortfolioForm = (props) => {
       newErrors = {
         ...newErrors,
         expenses: "amount cannot be blank",
-      }
-    }
-    if (!annualSavings.match(currencyRegexp)) {
-      newErrors = {
-        ...newErrors,
-        annualSavings: "must be a number (no more than 2 decimals)",
-      }
-    }
-    if (annualSavings.trim() == "") {
-      newErrors = {
-        ...newErrors,
-        annualSavings: "amount cannot be blank",
       }
     }
     if (!balanceReg.match(currencyRegexp)) {
@@ -272,16 +258,6 @@ const NewPortfolioForm = (props) => {
                 onChange={handleFormChange}
               />
               <FormError error={errors.expenses} />
-            </label>
-            <label htmlFor="annualSavings">
-              Annual Savings:
-              <input
-                type="text"
-                value={formPayload.annualSavings}
-                name="annualSavings"
-                onChange={handleFormChange}
-              />
-              <FormError error={errors.annualSavings} />
             </label>
           </div>
           <div className="small-12 large-1"></div>

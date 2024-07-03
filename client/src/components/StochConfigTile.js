@@ -48,6 +48,17 @@ const StochConfigTile = (props) => {
       </tr>
     )
   }
+  let savingsAmount = null
+  if (stochConfig.savingsType == "fixed") {
+    savingsAmount = (
+      <tr>
+        <td className="wide-config-col">Annual Savings:</td>
+        <td className="narrow-config-col">
+          {formatCurrency(stochConfig.annualSavings, false)}
+        </td>
+      </tr>
+    )
+  }
 
   const config = (
     <div>
@@ -71,6 +82,7 @@ const StochConfigTile = (props) => {
             <td className="narrow-config-col">{stochConfig.savingsType}</td>
           </tr>
           {savingsPercent}
+          {savingsAmount}
           <tr>
             <td className="wide-config-col">Expense Drop @ Retirement:</td>
             <td className="narrow-config-col">
