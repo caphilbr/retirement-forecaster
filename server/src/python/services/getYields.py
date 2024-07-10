@@ -12,7 +12,7 @@ from yieldAssumptions import (
 
 def getYields(mixReg, mixRoth, inflationRate):
 
-  avgBank = inflationRate - avgBankVsInflation
+  avgBank = inflationRate + avgBankVsInflation
 
   yieldEquity = random.gauss(avgEquity, stdDevEquity)
   yieldFixedIncome = random.gauss(avgFixedIncome, stdDevFixedIncome)

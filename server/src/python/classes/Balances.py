@@ -82,7 +82,7 @@ class Balances:
         self.calcTotals()
         return withdrawals, taxRate, taxes
 
-    def calcEndYr(self, inflationRate):
+    def calcEndYr(self, inflationRate, taxRate):
         yieldReg, yieldRoth, yieldBank, yieldHomeEq = getYields(
             self.mixReg, self.mixRoth, inflationRate
         )
@@ -97,6 +97,7 @@ class Balances:
                 yieldRoth,
                 yieldBank,
                 yieldHomeEq,
+                taxRate
             )
         )
         self.calcTotals()

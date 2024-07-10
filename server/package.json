@@ -22,7 +22,7 @@
   "version": "0.0.1",
   "name": "retirement-forecaster-server",
   "engines": {
-    "node": "^16.18"
+    "node": ">=16.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",
