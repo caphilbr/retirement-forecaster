@@ -40,7 +40,9 @@ def produceScenario(scenarioInputs):
         else:
             withdrawals, taxRate, taxes = balances.calcBegYrRetired(expenses, age)
 
-        yieldReg, yieldRoth, yieldBank, yieldHomeEq = balances.calcEndYr(inflationRate)
+        yieldReg, yieldRoth, yieldBank, yieldHomeEq = balances.calcEndYr(
+            inflationRate, taxRate
+        )
 
         for column_name in columns:
             local_variables = locals()

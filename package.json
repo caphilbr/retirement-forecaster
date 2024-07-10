@@ -17,7 +17,7 @@
     "e2e:run": "yarn workspace retirement-forecaster-e2e e2e:run"
   },
   "engines": {
-    "node": "^16.18"
+    "node": ">=16.18.0"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
