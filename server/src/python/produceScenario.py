@@ -66,6 +66,7 @@ def produceScenario(scenarioInputs):
                         balances.getValue("endYrBalTotal"),
                         expenses,
                         deathAge,
+                        inflationRate,
                     )
                 ):
                     # retirement event, only happens once
