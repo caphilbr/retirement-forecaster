@@ -40,7 +40,7 @@ def produceScenario(scenarioInputs):
         else:
             withdrawals, taxRate, taxes = balances.calcBegYrRetired(expenses, age)
 
-        yieldReg, yieldRoth, yieldBank, yieldHomeEq = balances.calcEndYr(
+        yieldReg, yieldRoth, yieldBank, yieldHomeEq, yieldTotal = balances.calcEndYr(
             inflationRate, taxRate
         )
 
@@ -83,7 +83,7 @@ def produceScenario(scenarioInputs):
                         savings, savingsType, savingsPerc, salary, taxes, expenses
                     )
 
-            inflationRate = getInflationRate()
+            inflationRate = getInflationRate(inflationRate)
             raisePerc = raisePercent(inflationRate)
 
     return scenarioResult

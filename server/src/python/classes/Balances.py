@@ -101,8 +101,9 @@ class Balances:
             )
         )
         self.calcTotals()
+        yieldTotal = self.endYrBalTotal / self.begYrBalTotal - 1
 
-        return yieldReg, yieldRoth, yieldBank, yieldHomeEq
+        return yieldReg, yieldRoth, yieldBank, yieldHomeEq, yieldTotal
 
     def initNextYear(self):
         self.initBalReg = self.endYrBalReg

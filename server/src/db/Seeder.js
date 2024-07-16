@@ -126,7 +126,8 @@ class Seeder {
         let endYrBalHomeEq = (begYrBalHomeEq *= 1 + yieldHomeEq)
         let endYrBalTotal =
           endYrBalReg + endYrBalRoth + endYrBalBank + endYrBalHomeEq
-        if (exhaustAge == 0 && begYrBalTotal < 0 && initBalTotal > 0) {
+        let yieldTotal = endYrBalTotal / begYrBalTotal - 1
+          if (exhaustAge == 0 && begYrBalTotal < 0 && initBalTotal > 0) {
           exhaustAge = age
         }
 
@@ -154,6 +155,7 @@ class Seeder {
           yieldRoth,
           yieldBank,
           yieldHomeEq,
+          yieldTotal,
           inflationRate,
           raisePerc,
           endYrBalReg,

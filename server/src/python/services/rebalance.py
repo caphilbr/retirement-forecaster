@@ -1,3 +1,5 @@
+from bankBalance import bankBalance
+
 def rebalance(
     begYrBalReg,
     begYrBalRoth,
@@ -17,7 +19,7 @@ def rebalance(
     targetEquityBalance = 0
     
   if (begYrBalReg + begYrBalRoth) > 0:
-    regRothEqMix = min(0.99, targetEquityBalance / (begYrBalReg + begYrBalRoth))
+    regRothEqMix = min(1 - cashMix, targetEquityBalance / (begYrBalReg + begYrBalRoth))
   else:
     regRothEqMix = 0
   
@@ -28,10 +30,11 @@ def rebalance(
   mixRoth["equity"] = regRothEqMix
   mixRoth["fixedIncome"] = regRothFixedIncomeMix
 
-  maxBankBalance = 500000
   transferToHomeEq = 0
-  if begYrBalBank > maxBankBalance:
-    transferToHomeEq = begYrBalBank - maxBankBalance
+  if begYrBalBank > bankBalance["max"]:
+    transferToHomeEq = begYrBalBank - bankBalance["max"]
+  if begYrBalBank < bankBalance["min"]:
+    transferToHomeEq = -(bankBalance["min"] - begYrBalBank)
   updatedBegYrBalBank = begYrBalBank - transferToHomeEq
   updatedBegYrBalHomeEq = begYrBalHomeEq + transferToHomeEq
 

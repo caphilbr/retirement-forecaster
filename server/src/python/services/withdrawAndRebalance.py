@@ -1,5 +1,6 @@
 from calcTaxRate import calcTaxRate
 from rebalance import rebalance
+from bankBalance import bankBalance
 
 def withdrawAndRebalance(
       initBalReg, initBalRoth, initBalBank, initBalHomeEq, expenses, age
@@ -11,8 +12,8 @@ def withdrawAndRebalance(
   begYrBalHomeEq = initBalHomeEq
   remainingExpenses = expenses
 
-  minBankBalance = 100000
-  bankWithdrawal = min(begYrBalBank - minBankBalance, remainingExpenses)
+  availableBankAmt = max(0, begYrBalBank - bankBalance["min"])
+  bankWithdrawal = min(availableBankAmt, remainingExpenses)
   begYrBalBank -= bankWithdrawal
   remainingExpenses -= bankWithdrawal
 

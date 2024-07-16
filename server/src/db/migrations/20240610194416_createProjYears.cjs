@@ -35,6 +35,7 @@ exports.up = async (knex) => {
     table.float("yieldRoth").notNullable()
     table.float("yieldBank").notNullable()
     table.float("yieldHomeEq").notNullable()
+    table.float("yieldTotal").notNullable()
     table.float("inflationRate").notNullable()
     table.float("raisePerc").notNullable()
 
