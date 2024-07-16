@@ -10,6 +10,7 @@ const formatProjection = (projection) => {
     "yieldRoth",
     "yieldBank",
     "yieldHomeEq",
+    "yieldTotal",
     "inflationRate",
     "raisePerc"
   ]

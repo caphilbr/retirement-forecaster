@@ -20,6 +20,7 @@ columns = [
   "yieldRoth",
   "yieldBank",
   "yieldHomeEq",
+  "yieldTotal",
   "inflationRate",
   "raisePerc",
   "endYrBalReg",
